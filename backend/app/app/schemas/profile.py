@@ -7,6 +7,7 @@ from pydantic import BaseModel
 class ProfileBase(BaseModel):
     description: Optional[str] = None
     age: Optional[int] = True
+    sex: Optional[int] = None
 
 
 class ProfileCreate(ProfileBase):

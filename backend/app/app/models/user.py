@@ -25,4 +25,5 @@ class UserProfile(Base):
     avatar = Column(String, nullable=True)
     user = relationship(User, backref=backref("profile", uselist=False))
     age = Column(SmallInteger, nullable=True)
+    sex = Column(Boolean(), nullable=True)
     description = Column(String, default='')
