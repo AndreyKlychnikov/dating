@@ -6,9 +6,9 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import CreateUser from "@/views/main/admin/CreateUser.vue";
+import CreateUser from '@/views/admin/admin/CreateUser.vue';
 @Component({
-  components: {CreateUser}
+  components: {CreateUser},
 })
 export default class Login extends Vue {
 }

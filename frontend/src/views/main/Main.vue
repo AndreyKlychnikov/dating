@@ -1,133 +1,112 @@
 <template>
-  <div>
-    <v-navigation-drawer persistent :mini-variant="miniDrawer" v-model="showDrawer" fixed app>
-      <v-layout column fill-height>
-        <v-list>
-          <v-subheader>Main menu</v-subheader>
-          <v-list-tile to="/main/dashboard">
-            <v-list-tile-action>
-              <v-icon>web</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>Dashboard</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-          <v-list-tile to="/main/profile/view">
-            <v-list-tile-action>
-              <v-icon>person</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>Profile</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-          <v-list-tile to="/main/profile/edit">
-            <v-list-tile-action>
-              <v-icon>edit</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>Edit Profile</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-          <v-list-tile to="/main/profile/password">
-            <v-list-tile-action>
-              <v-icon>vpn_key</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>Change Password</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </v-list>
-        <v-divider></v-divider>
-        <v-list subheader v-show="hasAdminAccess">
-          <v-subheader>Admin</v-subheader>
-          <v-list-tile to="/main/admin/users/all">
-            <v-list-tile-action>
-              <v-icon>group</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>Manage Users</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-          <v-list-tile to="/main/admin/users/create">
-            <v-list-tile-action>
-              <v-icon>person_add</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>Create User</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </v-list>
-        <v-spacer></v-spacer>
-        <v-list>
-          <v-list-tile @click="logout">
-            <v-list-tile-action>
-              <v-icon>close</v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>Logout</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-          <v-divider></v-divider>
-          <v-list-tile @click="switchMiniDrawer">
-            <v-list-tile-action>
-              <v-icon v-html="miniDrawer ? 'chevron_right' : 'chevron_left'"></v-icon>
-            </v-list-tile-action>
-            <v-list-tile-content>
-              <v-list-tile-title>Collapse</v-list-tile-title>
-            </v-list-tile-content>
-          </v-list-tile>
-        </v-list>
-      </v-layout>
-    </v-navigation-drawer>
-    <v-toolbar dark color="primary" app>
-      <v-toolbar-side-icon @click.stop="switchShowDrawer"></v-toolbar-side-icon>
-      <v-toolbar-title v-text="appName"></v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-menu bottom left offset-y>
-        <v-btn slot="activator" icon>
-          <v-icon>more_vert</v-icon>
-        </v-btn>
-        <v-list>
-          <v-list-tile to="/main/profile">
-            <v-list-tile-content>
-              <v-list-tile-title>Profile</v-list-tile-title>
-            </v-list-tile-content>
-            <v-list-tile-action>
-              <v-icon>person</v-icon>
-            </v-list-tile-action>
-          </v-list-tile>
-          <v-list-tile @click="logout">
-            <v-list-tile-content>
-              <v-list-tile-title>Logout</v-list-tile-title>
-            </v-list-tile-content>
-            <v-list-tile-action>
-              <v-icon>close</v-icon>
-            </v-list-tile-action>
-          </v-list-tile>
-        </v-list>
-      </v-menu>
-    </v-toolbar>
-    <v-content>
-      <router-view></router-view>
-    </v-content>
-    <v-footer class="pa-3" fixed app>
-      <v-spacer></v-spacer>
-      <span>&copy; {{appName}}</span>
-    </v-footer>
-  </div>
+  <v-app id="inspire">
+
+    <v-app-bar
+        app
+        color="white"
+    >
+      <v-avatar
+          :color="$vuetify.breakpoint.smAndDown ? 'grey darken-1' : 'transparent'"
+          size="32"
+          @click="logout"
+      ></v-avatar>
+
+      <v-tabs
+          centered
+          class="ml-n9"
+          color="grey darken-1"
+      >
+        <v-tab to="/main/matching">
+          Love
+        </v-tab>
+        <v-tab to="/main/messages">
+          Messages
+        </v-tab>
+        <v-tab>
+          Profile
+        </v-tab>
+        <v-tab>
+          Updates
+        </v-tab>
+      </v-tabs>
+
+      <v-avatar
+          class="hidden-sm-and-down"
+          color="grey darken-1 shrink"
+          size="32"
+          @click="logout"
+      ></v-avatar>
+    </v-app-bar>
+
+    <v-main class="grey lighten-3">
+      <v-container>
+        <v-row>
+          <v-col
+              cols="12"
+              sm="2"
+          >
+            <v-sheet
+                rounded="lg"
+                min-height="268"
+            >
+              <v-container>
+                <v-list>
+                  <v-list-item to="/admin" v-show="userProfile.is_superuser">
+                    <v-list-item-title>Admin page</v-list-item-title>
+                  </v-list-item>
+                  <v-list-item @click="logout">
+                    <v-list-item-title>LogOut</v-list-item-title>
+                  </v-list-item>
+                </v-list>
+              </v-container>
+
+              <!--  -->
+            </v-sheet>
+          </v-col>
+
+          <v-col
+              cols="12"
+              sm="8"
+          >
+            <v-sheet
+                min-height="70vh"
+                rounded="lg"
+            >
+              <v-main>
+                <router-view></router-view>
+              </v-main>
+
+              <!--  -->
+            </v-sheet>
+          </v-col>
+
+          <v-col
+              cols="12"
+              sm="2"
+          >
+            <v-sheet
+                rounded="lg"
+                min-height="268"
+            >
+              <!--  -->
+            </v-sheet>
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-main>
+  </v-app>
 </template>
 
 <script lang="ts">
-import { Vue, Component } from 'vue-property-decorator';
+import {Component, Vue} from 'vue-property-decorator';
 
-import { appName } from '@/env';
-import { readDashboardMiniDrawer, readDashboardShowDrawer, readHasAdminAccess } from '@/store/main/getters';
-import { commitSetDashboardShowDrawer, commitSetDashboardMiniDrawer } from '@/store/main/mutations';
-import { dispatchUserLogOut } from '@/store/main/actions';
+import {readHasAdminAccess, readUserProfile} from '@/store/main/getters';
+import {dispatchUserLogOut} from '@/store/main/actions';
+import {store} from '@/store';
 
 const routeGuardMain = async (to, from, next) => {
   if (to.path === '/main') {
-    next('/main/dashboard');
+    next('/main/matching');
   } else {
     next();
   }
@@ -135,7 +114,9 @@ const routeGuardMain = async (to, from, next) => {
 
 @Component
 export default class Main extends Vue {
-  public appName = appName;
+  get userProfile() {
+    return readUserProfile(this.$store);
+  }
 
   public beforeRouteEnter(to, from, next) {
     routeGuardMain(to, from, next);
@@ -145,38 +126,13 @@ export default class Main extends Vue {
     routeGuardMain(to, from, next);
   }
 
-  get miniDrawer() {
-    return readDashboardMiniDrawer(this.$store);
-  }
-
-  get showDrawer() {
-    return readDashboardShowDrawer(this.$store);
-  }
-
-  set showDrawer(value) {
-    commitSetDashboardShowDrawer(this.$store, value);
-  }
-
-  public switchShowDrawer() {
-    commitSetDashboardShowDrawer(
-      this.$store,
-      !readDashboardShowDrawer(this.$store),
-    );
-  }
-
-  public switchMiniDrawer() {
-    commitSetDashboardMiniDrawer(
-      this.$store,
-      !readDashboardMiniDrawer(this.$store),
-    );
-  }
-
-  public get hasAdminAccess() {
-    return readHasAdminAccess(this.$store);
-  }
-
   public async logout() {
     await dispatchUserLogOut(this.$store);
   }
 }
 </script>
+
+
+<style scoped>
+
+</style>

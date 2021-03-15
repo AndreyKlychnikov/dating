@@ -7,12 +7,14 @@ import './plugins/vee-validate';
 import App from './App.vue';
 import router from './router';
 import store from '@/store';
+import Vuetify from 'vuetify';
 import './registerServiceWorker';
 import 'vuetify/dist/vuetify.min.css';
 
 Vue.config.productionTip = false;
 
 new Vue({
+  vuetify: new Vuetify(),
   router,
   store,
   render: (h) => h(App),

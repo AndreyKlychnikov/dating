@@ -9,7 +9,7 @@ import { readHasAdminAccess } from '@/store/main/getters';
 
 const routeGuardAdmin = async (to, from, next) => {
   if (!readHasAdminAccess(store)) {
-    next('/main');
+    next('/admin');
   } else {
     next();
   }

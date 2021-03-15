@@ -6,18 +6,22 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { store } from '@/store';
 import { dispatchCheckLoggedIn } from '@/store/main/actions';
-import { readIsLoggedIn } from '@/store/main/getters';
+import { readIsLoggedIn, readHasAdminAccess } from '@/store/main/getters';
 
 const startRouteGuard = async (to, from, next) => {
   await dispatchCheckLoggedIn(store);
   if (readIsLoggedIn(store)) {
     if (to.path === '/login' || to.path === '/') {
-      next('/main');
+      if (readHasAdminAccess(store)) {
+        next('/admin');
+      } else {
+        next('/main');
+      }
     } else {
       next();
     }
   } else if (readIsLoggedIn(store) === false) {
-    if (to.path === '/' || (to.path as string).startsWith('/main')) {
+    if (to.path === '/' || (to.path as string).startsWith('/admin')) {
       next('/login');
     } else {
       next();

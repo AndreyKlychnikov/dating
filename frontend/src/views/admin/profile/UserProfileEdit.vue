@@ -90,7 +90,7 @@ export default class UserProfileEdit extends Vue {
         updatedProfile.email = this.email;
       }
       await dispatchUpdateUserProfile(this.$store, updatedProfile);
-      this.$router.push('/main/profile');
+      this.$router.push('/admin/profile');
     }
   }
 }
