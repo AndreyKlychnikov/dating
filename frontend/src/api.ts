@@ -1,6 +1,9 @@
 import axios from 'axios';
 import { apiUrl } from '@/env';
-import { IUserProfile, IUserProfileUpdate, IUserProfileCreate } from './interfaces';
+import { IUser, IUserUpdate, IUserCreate,
+  IUserProfile, IUserProfileUpdate,
+  IUserProfileCreate,
+} from './interfaces';
 
 function authHeaders(token: string) {
   return {
@@ -18,21 +21,37 @@ export const api = {
 
     return axios.post(`${apiUrl}/api/v1/login/access-token`, params);
   },
+  // UsersMe
   async getMe(token: string) {
-    return axios.get<IUserProfile>(`${apiUrl}/api/v1/users/me`, authHeaders(token));
+    return axios.get<IUser>(`${apiUrl}/api/v1/users/me`, authHeaders(token));
   },
-  async updateMe(token: string, data: IUserProfileUpdate) {
-    return axios.put<IUserProfile>(`${apiUrl}/api/v1/users/me`, data, authHeaders(token));
+  async updateMe(token: string, data: IUserUpdate) {
+    return axios.put<IUser>(`${apiUrl}/api/v1/users/me`, data, authHeaders(token));
   },
+  // Profiles
+  async getMyProfile(token: string) {
+    return axios.get<IUserProfile>(`${apiUrl}/api/v1/profiles/me`, authHeaders(token));
+  },
+  async updateProfile(token: string, data: IUserProfileUpdate) {
+    return axios.put<IUserProfileUpdate>(`${apiUrl}/api/v1/profiles`, data, authHeaders(token));
+  },
+  async createProfile(token: string, data: IUserProfileCreate) {
+    return axios.post<IUserProfileCreate>(`${apiUrl}/api/v1/profiles`, data,  authHeaders(token));
+  },
+  async uploadAvatar(token: string, data: FormData) {
+    return axios.post(`${apiUrl}/api/v1/profiles/upload_avatar`, data, authHeaders(token));
+  },
+  // Users
   async getUsers(token: string) {
-    return axios.get<IUserProfile[]>(`${apiUrl}/api/v1/users/`, authHeaders(token));
+    return axios.get<IUser[]>(`${apiUrl}/api/v1/users/`, authHeaders(token));
   },
-  async updateUser(token: string, userId: number, data: IUserProfileUpdate) {
+  async updateUser(token: string, userId: number, data: IUserUpdate) {
     return axios.put(`${apiUrl}/api/v1/users/${userId}`, data, authHeaders(token));
   },
-  async createUser(token: string, data: IUserProfileCreate) {
+  async createUser(token: string, data: IUserCreate) {
     return axios.post(`${apiUrl}/api/v1/users/`, data, authHeaders(token));
   },
+  // Password
   async passwordRecovery(email: string) {
     return axios.post(`${apiUrl}/api/v1/password-recovery/${email}`);
   },

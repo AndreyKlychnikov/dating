@@ -1,6 +1,6 @@
 import { api } from '@/api';
 import { ActionContext } from 'vuex';
-import { IUserProfileCreate, IUserProfileUpdate } from '@/interfaces';
+import { IUserCreate, IUserUpdate } from '@/interfaces';
 import { State } from '../state';
 import { AdminState } from './state';
 import { getStoreAccessors } from 'typesafe-vuex';
@@ -21,13 +21,13 @@ export const actions = {
             await dispatchCheckApiError(context, error);
         }
     },
-    async actionUpdateUser(context: MainContext, payload: { id: number, user: IUserProfileUpdate }) {
+    async actionUpdateUser(context: MainContext, payload: { id: number, user: IUserUpdate }) {
         try {
             const loadingNotification = { content: 'saving', showProgress: true };
             commitAddNotification(context, loadingNotification);
             const response = (await Promise.all([
                 api.updateUser(context.rootState.main.token, payload.id, payload.user),
-                await new Promise((resolve, reject) => setTimeout(() => resolve(), 500)),
+                await new Promise((resolve, reject) => setTimeout(() => resolve("Success"), 500)),
             ]))[0];
             commitSetUser(context, response.data);
             commitRemoveNotification(context, loadingNotification);
@@ -36,13 +36,13 @@ export const actions = {
             await dispatchCheckApiError(context, error);
         }
     },
-    async actionCreateUser(context: MainContext, payload: IUserProfileCreate) {
+    async actionCreateUser(context: MainContext, payload: IUserCreate) {
         try {
             const loadingNotification = { content: 'saving', showProgress: true };
             commitAddNotification(context, loadingNotification);
             const response = (await Promise.all([
                 api.createUser(context.rootState.main.token, payload),
-                await new Promise((resolve, reject) => setTimeout(() => resolve(), 500)),
+                await new Promise((resolve, reject) => setTimeout(() => resolve("Success"), 500)),
             ]))[0];
             commitSetUser(context, response.data);
             commitRemoveNotification(context, loadingNotification);

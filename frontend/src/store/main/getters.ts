@@ -5,12 +5,13 @@ import { State } from '../state';
 export const getters = {
     hasAdminAccess: (state: MainState) => {
         return (
-            state.userProfile &&
-            state.userProfile.is_superuser && state.userProfile.is_active);
+            state.user &&
+            state.user.is_superuser && state.user.is_active);
     },
     loginError: (state: MainState) => state.logInError,
     dashboardShowDrawer: (state: MainState) => state.dashboardShowDrawer,
     dashboardMiniDrawer: (state: MainState) => state.dashboardMiniDrawer,
+    user: (state: MainState) => state.user,
     userProfile: (state: MainState) => state.userProfile,
     token: (state: MainState) => state.token,
     isLoggedIn: (state: MainState) => state.isLoggedIn,
@@ -25,5 +26,6 @@ export const readHasAdminAccess = read(getters.hasAdminAccess);
 export const readIsLoggedIn = read(getters.isLoggedIn);
 export const readLoginError = read(getters.loginError);
 export const readToken = read(getters.token);
+export const readUser = read(getters.user);
 export const readUserProfile = read(getters.userProfile);
 export const readFirstNotification = read(getters.firstNotification);

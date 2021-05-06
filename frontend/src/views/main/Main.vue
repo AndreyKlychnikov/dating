@@ -1,57 +1,52 @@
 <template>
   <v-app id="inspire">
-
-    <v-app-bar
-        app
-        color="white"
-    >
+    <v-app-bar app color="white">
       <v-avatar
-          :color="$vuetify.breakpoint.smAndDown ? 'grey darken-1' : 'transparent'"
-          size="32"
-          @click="logout"
+        :color="$vuetify.breakpoint.smAndDown ? 'grey darken-1' : 'transparent'"
+        size="32"
+        @click="logout"
       ></v-avatar>
 
-      <v-tabs
-          centered
-          class="ml-n9"
-          color="grey darken-1"
-      >
-        <v-tab to="/main/matching">
+      <v-tabs centered class="ml-n9">
+        <v-tab
+          to="/main/matching"
+          exact-active-class="blue--text text--accent-4"
+        >
           Love
         </v-tab>
-        <v-tab to="/main/messages">
+        <v-tab
+          to="/main/messages"
+          exact-active-class="blue--text text--accent-4"
+        >
           Messages
         </v-tab>
-        <v-tab>
+        <v-tab
+          to="/main/profile"
+          exact-active-class="blue--text text--accent-4"
+        >
           Profile
         </v-tab>
-        <v-tab>
+        <v-tab exact-active-class="blue--text text--accent-4">
           Updates
         </v-tab>
       </v-tabs>
 
       <v-avatar
-          class="hidden-sm-and-down"
-          color="grey darken-1 shrink"
-          size="32"
-          @click="logout"
+        class="hidden-sm-and-down"
+        color="grey darken-1 shrink"
+        size="32"
+        @click="logout"
       ></v-avatar>
     </v-app-bar>
 
-    <v-main class="grey lighten-3">
+    <v-main class="white">
       <v-container>
         <v-row>
-          <v-col
-              cols="12"
-              sm="2"
-          >
-            <v-sheet
-                rounded="lg"
-                min-height="268"
-            >
+          <v-col cols="12" sm="2">
+            <v-sheet rounded="lg" min-height="268" outlined color="">
               <v-container>
                 <v-list>
-                  <v-list-item to="/admin" v-show="userProfile.is_superuser">
+                  <v-list-item to="/admin" v-show="user.is_superuser">
                     <v-list-item-title>Admin page</v-list-item-title>
                   </v-list-item>
                   <v-list-item @click="logout">
@@ -64,30 +59,18 @@
             </v-sheet>
           </v-col>
 
-          <v-col
-              cols="12"
-              sm="8"
-          >
-            <v-sheet
-                min-height="70vh"
-                rounded="lg"
-            >
-              <v-main>
+          <v-col cols="12" sm="8">
+            <v-sheet min-height="70vh" rounded="lg" outlined>
+              <v-container fluid>
                 <router-view></router-view>
-              </v-main>
+              </v-container>
 
               <!--  -->
             </v-sheet>
           </v-col>
 
-          <v-col
-              cols="12"
-              sm="2"
-          >
-            <v-sheet
-                rounded="lg"
-                min-height="268"
-            >
+          <v-col cols="12" sm="2">
+            <v-sheet rounded="lg" min-height="268" outlined>
               <!--  -->
             </v-sheet>
           </v-col>
@@ -98,15 +81,15 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from 'vue-property-decorator';
+import { Component, Vue } from "vue-property-decorator";
 
-import {readHasAdminAccess, readUserProfile} from '@/store/main/getters';
-import {dispatchUserLogOut} from '@/store/main/actions';
-import {store} from '@/store';
+import { readHasAdminAccess, readUser } from "@/store/main/getters";
+import { dispatchUserLogOut } from "@/store/main/actions";
+import { store } from "@/store";
 
 const routeGuardMain = async (to, from, next) => {
-  if (to.path === '/main') {
-    next('/main/matching');
+  if (to.path === "/main") {
+    next("/main/matching");
   } else {
     next();
   }
@@ -114,8 +97,8 @@ const routeGuardMain = async (to, from, next) => {
 
 @Component
 export default class Main extends Vue {
-  get userProfile() {
-    return readUserProfile(this.$store);
+  get user() {
+    return readUser(this.$store);
   }
 
   public beforeRouteEnter(to, from, next) {
@@ -132,7 +115,5 @@ export default class Main extends Vue {
 }
 </script>
 
-
 <style scoped>
-
 </style>

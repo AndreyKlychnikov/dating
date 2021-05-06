@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
+    "@vue/cli": "^4.5.11",
     "axios": "^0.21.1",
     "core-js": "^3.4.3",
     "register-service-worker": "^1.0.0",

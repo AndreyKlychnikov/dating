@@ -19,12 +19,12 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { Store } from 'vuex';
-import { readUserProfile } from '@/store/main/getters';
+import { readUser } from '@/store/main/getters';
 
 @Component
 export default class Dashboard extends Vue {
   get greetedUser() {
-    const userProfile = readUserProfile(this.$store);
+    const userProfile = readUser(this.$store);
     if (userProfile) {
       if (userProfile.full_name) {
         return userProfile.full_name;

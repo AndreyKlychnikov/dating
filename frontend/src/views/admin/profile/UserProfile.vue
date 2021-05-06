@@ -17,8 +17,8 @@
         </div>
       </v-card-text>
       <v-card-actions>
-        <v-btn to="/main/profile/edit">Edit</v-btn>
-        <v-btn to="/main/profile/password">Change password</v-btn>
+        <v-btn to="/admin/profile/edit">Edit</v-btn>
+        <v-btn to="/admin/profile/password">Change password</v-btn>
       </v-card-actions>
     </v-card>
   </v-container>
@@ -27,12 +27,12 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { Store } from 'vuex';
-import { readUserProfile } from '@/store/main/getters';
+import { readUser } from '@/store/main/getters';
 
 @Component
 export default class UserProfile extends Vue {
   get userProfile() {
-    return readUserProfile(this.$store);
+    return readUser(this.$store);
   }
 
   public goToEdit() {

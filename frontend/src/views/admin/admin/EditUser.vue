@@ -100,7 +100,7 @@
 
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
-import { IUserProfile, IUserProfileUpdate } from '@/interfaces';
+import { IUser, IUserUpdate } from '@/interfaces';
 import { dispatchGetUsers, dispatchUpdateUser } from '@/store/admin/actions';
 import { readAdminOneUser } from '@/store/admin/getters';
 
@@ -139,7 +139,7 @@ export default class EditUser extends Vue {
 
   public async submit() {
     if (await this.$validator.validateAll()) {
-      const updatedProfile: IUserProfileUpdate = {};
+      const updatedProfile: IUserUpdate = {};
       if (this.fullName) {
         updatedProfile.full_name = this.fullName;
       }

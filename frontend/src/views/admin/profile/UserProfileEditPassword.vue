@@ -50,9 +50,9 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { Store } from 'vuex';
-import { IUserProfileUpdate } from '@/interfaces';
+import { IUserUpdate } from '@/interfaces';
 import { readUserProfile } from '@/store/main/getters';
-import { dispatchUpdateUserProfile } from '@/store/main/actions';
+import { dispatchUpdateUser } from '@/store/main/actions';
 
 @Component
 export default class UserProfileEdit extends Vue {
@@ -76,9 +76,9 @@ export default class UserProfileEdit extends Vue {
 
   public async submit() {
     if (await this.$validator.validateAll()) {
-      const updatedProfile: IUserProfileUpdate = {};
+      const updatedProfile: IUserUpdate = {};
       updatedProfile.password = this.password1;
-      await dispatchUpdateUserProfile(this.$store, updatedProfile);
+      await dispatchUpdateUser(this.$store, updatedProfile);
       this.$router.push('/admin/profile');
     }
   }

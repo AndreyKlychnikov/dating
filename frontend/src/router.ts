@@ -48,12 +48,14 @@ export default new Router({
                                 {
                                     path: 'view',
                                     component: () => import(
-                                        /* webpackChunkName: "admin-profile" */ './views/admin/profile/UserProfile.vue'),
+                                        /* webpackChunkName: "admin-profile" */
+                                        './views/admin/profile/UserProfile.vue'),
                                 },
                                 {
                                     path: 'edit',
                                     component: () => import(
-                                        /* webpackChunkName: "admin-profile-edit" */ './views/admin/profile/UserProfileEdit.vue'),
+                                        /* webpackChunkName: "admin-profile-edit" */
+                                        './views/admin/profile/UserProfileEdit.vue'),
                                 },
                                 {
                                     path: 'password',
@@ -116,6 +118,18 @@ export default new Router({
                             component: () => import(
                                 /* webpackChunkName: "main-Messages" */
                                 './views/main/Messages.vue'),
+                        },
+                        {
+                            path: 'profile',
+                            component: () => import(
+                                /* webpackChunkName: "main-Profile" */
+                                './views/main/Profile.vue'),
+                        },
+                        {
+                            path: 'updates',
+                            component: () => import(
+                                /* webpackChunkName: "main-Updates" */
+                                './views/main/Updates.vue'),
                         },
 
                     ],

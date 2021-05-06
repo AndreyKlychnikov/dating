@@ -32,13 +32,13 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { Store } from 'vuex';
-import { IUserProfileUpdate } from '@/interfaces';
+import { IUserUpdate } from '@/interfaces';
 import { appName } from '@/env';
 import { commitAddNotification } from '@/store/main/mutations';
 import { dispatchResetPassword } from '@/store/main/actions';
 
 @Component
-export default class UserProfileEdit extends Vue {
+export default class UserEdit extends Vue {
   public appName = appName;
   public valid = true;
   public password1 = '';

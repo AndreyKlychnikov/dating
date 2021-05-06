@@ -11,7 +11,9 @@ import {
     commitSetLoggedIn,
     commitSetLogInError,
     commitSetToken,
+    commitSetUser,
     commitSetUserProfile,
+    commitSetUserProfileAvatar,
 } from './mutations';
 import {AppNotification, MainState} from './state';
 
@@ -27,6 +29,7 @@ export const actions = {
                 commitSetToken(context, token);
                 commitSetLoggedIn(context, true);
                 commitSetLogInError(context, false);
+                await dispatchGetUser(context);
                 await dispatchGetUserProfile(context);
                 await dispatchRouteLoggedIn(context);
                 commitAddNotification(context, {content: 'Logged in', color: 'success'});
@@ -38,9 +41,20 @@ export const actions = {
             await dispatchLogOut(context);
         }
     },
-    async actionGetUserProfile(context: MainContext) {
+    async actionGetUser(context: MainContext) {
         try {
             const response = await api.getMe(context.state.token);
+            if (response.data) {
+                commitSetUser(context, response.data);
+            }
+        } catch (error) {
+            await dispatchCheckApiError(context, error);
+        }
+    },
+    async actionGetUserProfile(context: MainContext) {
+        try {
+            const response = await api.getMyProfile(context.state.token);
+            
             if (response.data) {
                 commitSetUserProfile(context, response.data);
             }
@@ -48,13 +62,40 @@ export const actions = {
             await dispatchCheckApiError(context, error);
         }
     },
-    async actionUpdateUserProfile(context: MainContext, payload) {
+    async actionUploadUserProfileAvatar(context: MainContext,payload: FormData) {
+        try {
+            const response = await api.uploadAvatar(context.state.token,payload);
+            
+            if (response.data){
+                commitSetUserProfile(context,response.data);
+            }
+            
+        } catch (error) {
+            await dispatchCheckApiError(context, error);
+        }
+    },
+    async actionUpdateUser(context: MainContext, payload) {
         try {
             const loadingNotification = {content: 'saving', showProgress: true};
             commitAddNotification(context, loadingNotification);
             const response = (await Promise.all([
                 api.updateMe(context.state.token, payload),
-                await new Promise((resolve, reject) => setTimeout(() => resolve(), 500)),
+                await new Promise((resolve, reject) => setTimeout(() => resolve("Success"), 500)),
+            ]))[0];
+            commitSetUser(context, response.data);
+            commitRemoveNotification(context, loadingNotification);
+            commitAddNotification(context, {content: 'User successfully updated', color: 'success'});
+        } catch (error) {
+            await dispatchCheckApiError(context, error);
+        }
+    },
+    async actionUpdateUserProfile(context: MainContext, payload) {
+        try {
+            const loadingNotification = {content: 'Updating', showProgress: true};
+            commitAddNotification(context, loadingNotification);
+            const response = (await Promise.all([
+                api.updateProfile(context.state.token, payload),
+                await new Promise((resolve, reject) => setTimeout(() => resolve("Success"), 500)),
             ]))[0];
             commitSetUserProfile(context, response.data);
             commitRemoveNotification(context, loadingNotification);
@@ -75,9 +116,11 @@ export const actions = {
             }
             if (token) {
                 try {
-                    const response = await api.getMe(token);
+                    const user = await api.getMe(token);
+                    const userProfile = await api.getMyProfile(token);
                     commitSetLoggedIn(context, true);
-                    commitSetUserProfile(context, response.data);
+                    commitSetUser(context, user.data);
+                    commitSetUserProfile(context, userProfile.data);
                 } catch (error) {
                     await dispatchRemoveLogIn(context);
                 }
@@ -128,7 +171,7 @@ export const actions = {
             commitAddNotification(context, loadingNotification);
             const response = (await Promise.all([
                 api.passwordRecovery(payload.username),
-                await new Promise((resolve, reject) => setTimeout(() => resolve(), 500)),
+                await new Promise((resolve, reject) => setTimeout(() => resolve("Success"), 500)),
             ]))[0];
             commitRemoveNotification(context, loadingNotification);
             commitAddNotification(context, {content: 'Password recovery email sent', color: 'success'});
@@ -144,7 +187,7 @@ export const actions = {
             commitAddNotification(context, loadingNotification);
             const response = (await Promise.all([
                 api.resetPassword(payload.password, payload.token),
-                await new Promise((resolve, reject) => setTimeout(() => resolve(), 500)),
+                await new Promise((resolve, reject) => setTimeout(() => resolve("Success"), 500)),
             ]))[0];
             commitRemoveNotification(context, loadingNotification);
             commitAddNotification(context, {content: 'Password successfully reset', color: 'success'});
@@ -160,13 +203,16 @@ const {dispatch} = getStoreAccessors<MainState | any, State>('');
 
 export const dispatchCheckApiError = dispatch(actions.actionCheckApiError);
 export const dispatchCheckLoggedIn = dispatch(actions.actionCheckLoggedIn);
+export const dispatchGetUser = dispatch(actions.actionGetUser);
 export const dispatchGetUserProfile = dispatch(actions.actionGetUserProfile);
+export const dispatchUploadUserAvatar = dispatch(actions.actionUploadUserProfileAvatar);
 export const dispatchLogIn = dispatch(actions.actionLogIn);
 export const dispatchLogOut = dispatch(actions.actionLogOut);
 export const dispatchUserLogOut = dispatch(actions.actionUserLogOut);
 export const dispatchRemoveLogIn = dispatch(actions.actionRemoveLogIn);
 export const dispatchRouteLoggedIn = dispatch(actions.actionRouteLoggedIn);
 export const dispatchRouteLogOut = dispatch(actions.actionRouteLogOut);
+export const dispatchUpdateUser = dispatch(actions.actionUpdateUser);
 export const dispatchUpdateUserProfile = dispatch(actions.actionUpdateUserProfile);
 export const dispatchRemoveNotification = dispatch(actions.removeNotification);
 export const dispatchPasswordRecovery = dispatch(actions.passwordRecovery);

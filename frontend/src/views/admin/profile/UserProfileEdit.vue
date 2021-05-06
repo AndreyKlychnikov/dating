@@ -46,9 +46,9 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator';
 import { Store } from 'vuex';
-import { IUserProfileUpdate } from '@/interfaces';
-import { readUserProfile } from '@/store/main/getters';
-import { dispatchUpdateUserProfile } from '@/store/main/actions';
+import { IUserUpdate } from '@/interfaces';
+import { readUser } from '@/store/main/getters';
+import { dispatchUpdateUser } from '@/store/main/actions';
 
 @Component
 export default class UserProfileEdit extends Vue {
@@ -57,22 +57,22 @@ export default class UserProfileEdit extends Vue {
   public email: string = '';
 
   public created() {
-    const userProfile = readUserProfile(this.$store);
-    if (userProfile) {
-      this.fullName = userProfile.full_name;
-      this.email = userProfile.email;
+    const user = readUser(this.$store);
+    if (user) {
+      this.fullName = user.full_name;
+      this.email = user.email;
     }
   }
 
-  get userProfile() {
-    return readUserProfile(this.$store);
+  get user() {
+    return readUser(this.$store);
   }
 
   public reset() {
-    const userProfile = readUserProfile(this.$store);
-    if (userProfile) {
-      this.fullName = userProfile.full_name;
-      this.email = userProfile.email;
+    const user = readUser(this.$store);
+    if (user) {
+      this.fullName = user.full_name;
+      this.email = user.email;
     }
   }
 
@@ -82,14 +82,14 @@ export default class UserProfileEdit extends Vue {
 
   public async submit() {
     if ((this.$refs.form as any).validate()) {
-      const updatedProfile: IUserProfileUpdate = {};
+      const updatedProfile: IUserUpdate = {};
       if (this.fullName) {
         updatedProfile.full_name = this.fullName;
       }
       if (this.email) {
         updatedProfile.email = this.email;
       }
-      await dispatchUpdateUserProfile(this.$store, updatedProfile);
+      await dispatchUpdateUser(this.$store, updatedProfile);
       this.$router.push('/admin/profile');
     }
   }
