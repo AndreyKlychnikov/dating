@@ -21,6 +21,11 @@ export interface IUserCreate {
     is_active?: boolean;
     is_superuser?: boolean;
 }
+export interface IUserCreateOpen {
+    email: string;
+    full_name?: string;
+    password?: string;
+}
 
 export interface IUserProfile {
     description?: string;

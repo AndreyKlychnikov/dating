@@ -8,7 +8,7 @@
           <v-col cols="auto">
             <div class="my-4">
               <v-img
-                :src="'http://localhost/static/' + userProfile.avatar"
+                :src="`http://localhost/static/${userProfile.avatar}`"
                 max-height="450"
                 max-width="450"
               ></v-img>
@@ -157,8 +157,6 @@ export default class Profile extends Vue {
     this.reset();
   }
   public async submit() {
-    console.log("log");
-
     const updatedProfile: IUserProfileUpdate = {};
     updatedProfile.description = this.description;
     updatedProfile.age = this.age;

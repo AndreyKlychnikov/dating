@@ -2,7 +2,7 @@ import axios from 'axios';
 import { apiUrl } from '@/env';
 import { IUser, IUserUpdate, IUserCreate,
   IUserProfile, IUserProfileUpdate,
-  IUserProfileCreate,
+  IUserProfileCreate, IUserCreateOpen
 } from './interfaces';
 
 function authHeaders(token: string) {
@@ -39,21 +39,24 @@ export const api = {
     return axios.post<IUserProfileCreate>(`${apiUrl}/api/v1/profiles`, data,  authHeaders(token));
   },
   async uploadAvatar(token: string, data: FormData) {
-    return axios.post(`${apiUrl}/api/v1/profiles/upload_avatar`, data, authHeaders(token));
+    return axios.post(`${apiUrl}/api/v1/profiles/upload_avatar/`, data, authHeaders(token));
   },
   // Users
   async getUsers(token: string) {
     return axios.get<IUser[]>(`${apiUrl}/api/v1/users/`, authHeaders(token));
   },
   async updateUser(token: string, userId: number, data: IUserUpdate) {
-    return axios.put(`${apiUrl}/api/v1/users/${userId}`, data, authHeaders(token));
+    return axios.put(`${apiUrl}/api/v1/users/${userId}/`, data, authHeaders(token));
   },
   async createUser(token: string, data: IUserCreate) {
     return axios.post(`${apiUrl}/api/v1/users/`, data, authHeaders(token));
   },
+  async createUserOpen(data: IUserCreateOpen) {
+    return axios.post(`${apiUrl}/api/v1/users/open/`, data);    
+  },
   // Password
   async passwordRecovery(email: string) {
-    return axios.post(`${apiUrl}/api/v1/password-recovery/${email}`);
+    return axios.post(`${apiUrl}/api/v1/password-recovery/${email}/`);
   },
   async resetPassword(password: string, token: string) {
     return axios.post(`${apiUrl}/api/v1/reset-password/`, {
