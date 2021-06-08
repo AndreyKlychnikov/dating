@@ -1,5 +1,7 @@
 from typing import Any, Dict, Optional, Union
 
+from app.models.sympathy import Sympathy
+from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
 from app.core.security import get_password_hash, verify_password
@@ -11,6 +13,14 @@ from app.schemas.user import UserCreate, UserUpdate
 class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
     def get_by_email(self, db: Session, *, email: str) -> Optional[User]:
         return db.query(User).filter(User.email == email).first()
+
+    def get_not_shown(self, db: Session, *, skip: int = 0, limit: int = 100, for_user_id: int) -> Optional[User]:
+        return db.query(User) \
+            .filter(User.id != for_user_id) \
+            .join(Sympathy, User.id == Sympathy.receiver_id, isouter=True)\
+            .filter(or_(Sympathy.sender_id != for_user_id, Sympathy.sender_id == None)) \
+            .offset(skip).limit(limit)\
+            .all()
 
     def create(self, db: Session, *, obj_in: UserCreate) -> User:
         db_obj = User(
