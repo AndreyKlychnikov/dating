@@ -16,7 +16,7 @@ import {
     commitSetUserProfileAvatar,
 } from './mutations';
 import {AppNotification, MainState} from './state';
-import {IUserCreate} from '@/interfaces';
+import {IUserCreate, IUserProfile} from '@/interfaces';
 
 type MainContext = ActionContext<MainState, State>;
 
@@ -98,7 +98,7 @@ export const actions = {
                 api.updateProfile(context.state.token, payload),
                 await new Promise((resolve, reject) => setTimeout(() => resolve("Success"), 500)),
             ]))[0];
-            commitSetUserProfile(context, response.data);
+            commitSetUserProfile(context, response.data as IUserProfile);
             commitRemoveNotification(context, loadingNotification);
             commitAddNotification(context, {content: 'Profile successfully updated', color: 'success'});
         } catch (error) {

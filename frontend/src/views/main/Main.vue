@@ -18,7 +18,7 @@
           to="/main/messages"
           exact-active-class="blue--text text--accent-4"
         >
-          Messages
+          Sympathy
         </v-tab>
         <v-tab
           to="/main/profile"

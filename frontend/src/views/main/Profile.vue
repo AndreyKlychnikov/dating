@@ -6,13 +6,22 @@
         <v-divider />
         <v-row>
           <v-col cols="auto">
-            <div class="my-4">
+            <div
+              class="my-4"
+              :style="{
+                maxWidth: 350 + 'px',
+                maxHeight: 350 + 'px',
+              }"
+            >
               <v-img
                 :src="`http://localhost/static/${userProfile.avatar}`"
-                max-height="450"
-                max-width="450"
+                :style="{
+                  height: 350 + 'px',
+                  width: 100 + '%',
+                  objectFit: contain,
+                }"
               ></v-img>
-              <v-btn class="my-2" @click="overlayAvatar = true"
+              <v-btn class="my-5" @click="overlayAvatar = true"
                 >Change avatar</v-btn
               >
             </div>
@@ -54,16 +63,15 @@
                 {{ userProfile.sex ? "male" : "female" }}
               </div>
             </div>
+            <v-btn
+              color="orange lighten-2"
+              class="my-5 mx-2"
+              @click="overlay = !overlay"
+            >
+              Edit profile
+            </v-btn>
           </v-col>
         </v-row>
-
-        <v-btn
-          color="orange lighten-2"
-          class="mt-12"
-          @click="overlay = !overlay"
-        >
-          Edit profile
-        </v-btn>
 
         <v-overlay
           color="grey lighten-3"
@@ -140,16 +148,16 @@ export default class Profile extends Vue {
   public overlay: boolean = false;
   public overlayAvatar: boolean = false;
 
-  public description: string = this.userProfile.description;
-  public fullname: string = this.user.full_name;
-  public age: number = this.userProfile.age;
-  public sex: boolean = this.userProfile.sex;
-  public imageData: string | Blob = null;
+  public description: string | null = this.userProfile!.description!;
+  public fullname: string | null = this.user!.full_name!;
+  public age: number | null = this.userProfile!.age!;
+  public sex: boolean | null = this.userProfile!.sex!;
+  public imageData: string | Blob = "";
 
-  public reset() {    
+  public reset() {
     if (this.userProfile) {
       this.age = this.userProfile.age;
-      this.description = this.userProfile.description
+      this.description = this.userProfile.description;
     }
   }
   public cancel() {
@@ -157,9 +165,7 @@ export default class Profile extends Vue {
     this.reset();
   }
   public async submit() {
-    const updatedProfile: IUserProfileUpdate = {};
-    updatedProfile.description = this.description;
-    updatedProfile.age = this.age;
+    const updatedProfile: IUserProfileUpdate = { description: this.description!, age: this.age!, sex: this.userProfile!.sex!};
     await dispatchUpdateUserProfile(this.$store, updatedProfile);
     this.overlay = false;
   }
