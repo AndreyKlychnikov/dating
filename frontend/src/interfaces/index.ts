@@ -44,4 +44,11 @@ export interface IUserProfileCreate {
     age: number;
     sex: boolean;
 }
+export interface ISympathy {
+    sender_id: number;
+    receiver_id: number;
+}
+export interface ISendSympathy {
+    receiver_id: number;
+}
 

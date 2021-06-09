@@ -13,10 +13,13 @@ import {
     commitSetToken,
     commitSetUser,
     commitSetUserProfile,
+    commitSendSympathy,
+    commitGetSympathy,commitSetUserId,
+    commitSetUserProfileNotShown,
     commitSetUserProfileAvatar,
 } from './mutations';
 import {AppNotification, MainState} from './state';
-import {IUserCreate, IUserProfile} from '@/interfaces';
+import {ISendSympathy, IUserCreate, IUserProfile} from '@/interfaces';
 
 type MainContext = ActionContext<MainState, State>;
 
@@ -58,6 +61,50 @@ export const actions = {
             
             if (response.data) {
                 commitSetUserProfile(context, response.data);
+            }
+        } catch (error) {
+            await dispatchCheckApiError(context, error);
+        }
+    },
+    async actionGetUserId(context: MainContext, payload: number) {
+        try {
+            const response = await api.getUser(context.state.token,payload);
+            
+            if (response.data) {
+                commitSetUserId(context, response.data);
+            }
+        } catch (error) {
+            await dispatchCheckApiError(context, error);
+        }
+    },
+    async actionGetUserNotShown(context: MainContext) {
+        try {
+            const response = await api.notShown(context.state.token);
+            
+            if (response.data) {
+                commitSetUserProfileNotShown(context, response.data);
+            }
+        } catch (error) {
+            await dispatchCheckApiError(context, error);
+        }
+    },
+    async actionSendSympathy(context: MainContext,payload: ISendSympathy) {
+        try {
+            const response = await api.sendSympathy(context.state.token,payload);
+            
+            if (response.data) {
+                commitSendSympathy(context, response.data);
+            }
+        } catch (error) {
+            await dispatchCheckApiError(context, error);
+        }
+    },
+    async actionGetSympathy(context: MainContext) {
+        try {
+            const response = await api.getSympathies(context.state.token);
+            
+            if (response.data) {
+                commitGetSympathy(context, response.data);
             }
         } catch (error) {
             await dispatchCheckApiError(context, error);
@@ -220,8 +267,12 @@ const {dispatch} = getStoreAccessors<MainState | any, State>('');
 export const dispatchCheckApiError = dispatch(actions.actionCheckApiError);
 export const dispatchCheckLoggedIn = dispatch(actions.actionCheckLoggedIn);
 export const dispatchGetUser = dispatch(actions.actionGetUser);
+export const dispatchGetUserId = dispatch(actions.actionGetUserId);
 export const dispatchGetUserProfile = dispatch(actions.actionGetUserProfile);
+export const dispatchGetUserProfileNotShown = dispatch(actions.actionGetUserNotShown);
 export const dispatchUploadUserAvatar = dispatch(actions.actionUploadUserProfileAvatar);
+export const dispatchSympathy = dispatch(actions.actionSendSympathy);
+export const dispatchGetympathy = dispatch(actions.actionGetSympathy);
 export const dispatchLogIn = dispatch(actions.actionLogIn);
 export const dispatchLogOut = dispatch(actions.actionLogOut);
 export const dispatchUserLogOut = dispatch(actions.actionUserLogOut);

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { apiUrl } from '@/env';
 import { IUser, IUserUpdate, IUserCreate,
   IUserProfile, IUserProfileUpdate,
-  IUserProfileCreate, IUserCreateOpen
+  IUserProfileCreate, IUserCreateOpen, ISendSympathy, ISympathy
 } from './interfaces';
 
 function authHeaders(token: string) {
@@ -28,7 +28,11 @@ export const api = {
   async updateMe(token: string, data: IUserUpdate) {
     return axios.put<IUser>(`${apiUrl}/api/v1/users/me`, data, authHeaders(token));
   },
+  async getUser(token: string,id: number) {
+    return axios.get<IUser>(`${apiUrl}/api/v1/users/${id}`, authHeaders(token));
+  },
   // Profiles
+
   async getMyProfile(token: string) {
     return axios.get<IUserProfile>(`${apiUrl}/api/v1/profiles/me`, authHeaders(token));
   },
@@ -53,6 +57,15 @@ export const api = {
   },
   async createUserOpen(data: IUserCreateOpen) {
     return axios.post(`${apiUrl}/api/v1/users/open/`, data);    
+  },
+  async notShown(token: string) {
+    return axios.get(`${apiUrl}/api/v1/users/not_shown/`,authHeaders(token));    
+  },
+  async sendSympathy(token: string,data: ISendSympathy) {
+    return axios.post(`${apiUrl}/api/v1/users/sympathy/`,data,authHeaders(token));    
+  },
+  async getSympathies(token: string) {
+    return axios.get<ISympathy[]>(`${apiUrl}/api/v1/users/sympathy/`,authHeaders(token));    
   },
   // Password
   async passwordRecovery(email: string) {

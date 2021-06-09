@@ -26,9 +26,6 @@
         >
           Profile
         </v-tab>
-        <v-tab exact-active-class="blue--text text--accent-4">
-          Updates
-        </v-tab>
       </v-tabs>
 
       <v-avatar
