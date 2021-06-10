@@ -1,4 +1,4 @@
-import { IUser, IUserProfile } from '@/interfaces';
+import { ISendSympathy, ISympathy, IUser, IUserProfile, IUserProfileUpdate } from '@/interfaces';
 
 export interface AppNotification {
     content: string;
@@ -11,8 +11,12 @@ export interface MainState {
     isLoggedIn: boolean | null;
     logInError: boolean;
     user: IUser | null;
-    userProfile: IUserProfile | null;
+    userProfile: IUserProfile | IUserProfileUpdate | null;
+    userId: IUser | null;
+    userProfileNotShown: IUserProfile | null;
     userProfileAvatar: FormData | null;
+    sendSympathy: ISendSympathy | null;
+    sympathies: ISympathy[] | null;
     dashboardMiniDrawer: boolean;
     dashboardShowDrawer: boolean;
     notifications: AppNotification[];

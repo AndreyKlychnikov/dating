@@ -18,16 +18,13 @@
           to="/main/messages"
           exact-active-class="blue--text text--accent-4"
         >
-          Messages
+          Sympathy
         </v-tab>
         <v-tab
           to="/main/profile"
           exact-active-class="blue--text text--accent-4"
         >
           Profile
-        </v-tab>
-        <v-tab exact-active-class="blue--text text--accent-4">
-          Updates
         </v-tab>
       </v-tabs>
 
