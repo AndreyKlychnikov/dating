@@ -21,7 +21,7 @@
 import { Component, Vue } from 'vue-property-decorator';
 import { Store } from 'vuex';
 import { readUserProfile,readUserProfileNotShown } from '@/store/main/getters';
-import { ISendSympathy } from '@/interface';
+import { ISendSympathy } from '@/interfaces';
 import { dispatchUserLogOut, dispatchGetUserProfileNotShown, dispatchSympathy } from '@/store/main/actions';
 
 
@@ -34,10 +34,10 @@ export default class Matching extends Vue {
     return readUserProfileNotShown(this.$store);
   }
   public like(){
-    const user: ISendSympathy = {
-      receiver_id: this.userProfileNotShown.id
+    const user = {
+      receiver_id: this.userProfileNotShown!.id
     }
-    dispatchSympathy(this.$store,user);
+    dispatchSympathy(this.$store,user as ISendSympathy);
     dispatchGetUserProfileNotShown(this.$store);
   }
   public notlike(){

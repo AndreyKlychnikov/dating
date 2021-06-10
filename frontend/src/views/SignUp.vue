@@ -6,8 +6,7 @@
           <v-card class="elevation-12">
             <v-toolbar color="primary">
               <v-toolbar-title
-                >Регистрация - шаг
-                {{ step1 ? "1" : step2 ? "2" : "3" }}</v-toolbar-title
+                >Регистрация</v-toolbar-title
               >
               <v-spacer></v-spacer>
             </v-toolbar>
@@ -85,9 +84,9 @@
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn v-if="!step1" @click="back">Back</v-btn>
-              <v-btn v-if="!step3" @click="next">Next</v-btn>
-              <v-btn v-if="step3" @click="submit">Finish</v-btn>
+              <!-- <v-btn v-if="!step1" @click="back">Back</v-btn>
+              <v-btn v-if="!step3" @click="next">Next</v-btn> -->
+              <v-btn v-if="step1" @click="submit">Finish</v-btn>
             </v-card-actions>
           </v-card>
         </v-flex>
@@ -108,8 +107,8 @@ import {
 @Component
 export default class Login extends Vue {
   public step1: boolean = true;
-  public step2: boolean = false;
-  public step3: boolean = false;
+  // public step2: boolean = false;
+  // public step3: boolean = false;
   public user: IUserCreate = {
         email: "",
     full_name: "",
@@ -137,24 +136,24 @@ export default class Login extends Vue {
     await dispatchCreateUserOpen(this.$store, this.user);
     this.$router.push("/login");
   }
-  public next() {
-    if (this.step1) {
-      this.step1 = false;
-      this.step2 = true;
-      return;
-    }
-    this.step2 = false;
-    this.step3 = true;
-  }
-  public back() {
-    if (this.step2) {
-      this.step2 = false;
-      this.step1 = true;
-      return;
-    }
-    this.step3 = false;
-    this.step2 = true;
-  }
+  // public next() {
+  //   if (this.step1) {
+  //     this.step1 = false;
+  //     this.step2 = true;
+  //     return;
+  //   }
+  //   this.step2 = false;
+  //   this.step3 = true;
+  // }
+  // public back() {
+  //   if (this.step2) {
+  //     this.step2 = false;
+  //     this.step1 = true;
+  //     return;
+  //   }
+  //   this.step3 = false;
+  //   this.step2 = true;
+  // }
 }
 </script>
 

@@ -15,8 +15,8 @@ export interface MainState {
     userId: IUser | null;
     userProfileNotShown: IUserProfile | null;
     userProfileAvatar: FormData | null;
-    sendSympathy: ISendSympathy;
-    sympathies: ISympathy[];
+    sendSympathy: ISendSympathy | null;
+    sympathies: ISympathy[] | null;
     dashboardMiniDrawer: boolean;
     dashboardShowDrawer: boolean;
     notifications: AppNotification[];

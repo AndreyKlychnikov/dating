@@ -14,9 +14,11 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { Store } from "vuex";
-import { ISympathy } from "@/interfaces";
-import { readUserProfile, readUserSympathies,readUserId } from "@/store/main/getters";
+import { ISympathy,IUser } from "@/interfaces";
+import { readUserProfile, readUserSympathies,readUserId, readToken } from "@/store/main/getters";
 import { dispatchUserLogOut, dispatchGetUserId } from "@/store/main/actions";
+import axios from 'axios'
+import { apiUrl } from '@/env';
 
 @Component
 export default class Messages extends Vue {
@@ -25,6 +27,12 @@ export default class Messages extends Vue {
   }
   get getSymtpathy() {
     return readUserSympathies(this.$store);
+  }
+  get getUserId() {
+    return readUserId(this.$store);
+  }
+  get getToken() {
+    return readToken(this.$store);
   }
   get likes() {
     return [
@@ -42,15 +50,31 @@ export default class Messages extends Vue {
       },
     ];
   }
-  public names: string[] = ["asd"];
-  public getNames() {
-    this.names = [];
-  
-    this.getSymtpathy.forEach(el => {
-      let i = dispatchGetUserId(this.$store, el.reciever_id);
-      this.names.push(readUserId().fullname);
-    });
+  public async getUs(id: number){
+    await dispatchGetUserId(this.$store,id);
   }
+  public async getNames() {
+    let names: string[] = [];
+
+      for (const i of [{reciever_id: 4,},{reciever_id: 3,}]) {
+        axios.get<IUser>(`${apiUrl}/api/v1/users/${i.reciever_id}`, this.authHeaders(this.getToken)).then((res)=> {
+          names[names.length] = res.data.full_name;          
+        })
+      }
+      setTimeout(() => {
+        console.log(this.names);
+                  this.names = names;
+
+      }, 500);
+  }
+  public names: string[] = [];
+  public authHeaders(token: string) {
+  return {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+}
   mounted() {
     this.getNames();
   }
