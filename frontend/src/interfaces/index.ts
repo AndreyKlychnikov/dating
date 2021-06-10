@@ -28,20 +28,27 @@ export interface IUserCreateOpen {
 }
 
 export interface IUserProfile {
-    description?: string;
-    age?: number;
-    sex?: boolean;
+    description: string;
+    age: number;
+    sex: boolean;
     id?: number;
     avatar?: string;
 }
 export interface IUserProfileUpdate {
-    description?: string;
-    age?: number;
-    sex?: boolean;
+    description: string;
+    age: number;
+    sex: boolean;
 }
 export interface IUserProfileCreate {
-    description?: string;
-    age?: number;
-    sex?: boolean;
+    description: string;
+    age: number;
+    sex: boolean;
+}
+export interface ISympathy {
+    sender_id: number;
+    receiver_id: number;
+}
+export interface ISendSympathy {
+    receiver_id: number;
 }
 
