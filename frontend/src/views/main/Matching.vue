@@ -2,7 +2,7 @@
   <v-app>
     <div class="mx-auto">
               <v-img class="my-4"
-                :src="`http://localhost/static/${userProfile.avatar}`"
+                :src="`http://localhost/static/${userProfileNotShown.avatar}`"
                 max-height="500"
                 max-width="500"
               ></v-img>

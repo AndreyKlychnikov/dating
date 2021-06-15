@@ -16,7 +16,7 @@ import { Component, Vue } from "vue-property-decorator";
 import { Store } from "vuex";
 import { ISympathy,IUser } from "@/interfaces";
 import { readUserProfile, readUserSympathies,readUserId, readToken } from "@/store/main/getters";
-import { dispatchUserLogOut, dispatchGetUserId } from "@/store/main/actions";
+import { dispatchUserLogOut, dispatchGetUserId,dispatchGetSympathy } from "@/store/main/actions";
 import axios from 'axios'
 import { apiUrl } from '@/env';
 
@@ -34,29 +34,15 @@ export default class Messages extends Vue {
   get getToken() {
     return readToken(this.$store);
   }
-  get likes() {
-    return [
-      {
-        name: "John",
-      },
-      {
-        name: "Stepan",
-      },
-      {
-        name: "Andrew",
-      },
-      {
-        name: "Makarichev",
-      },
-    ];
-  }
-  public async getUs(id: number){
-    await dispatchGetUserId(this.$store,id);
+
+  public async getSympathies(){
+    setTimeout(() => {}, 500);
+    await dispatchGetSympathy(this.$store);
   }
   public async getNames() {
     let names: string[] = [];
 
-      for (const i of [{reciever_id: 4,},{reciever_id: 3,}]) {
+      for (const i of this.getSymtpathy) {
         axios.get<IUser>(`${apiUrl}/api/v1/users/${i.reciever_id}`, this.authHeaders(this.getToken)).then((res)=> {
           names[names.length] = res.data.full_name;          
         })
@@ -76,6 +62,7 @@ export default class Messages extends Vue {
   };
 }
   mounted() {
+    this.getSympathies();
     this.getNames();
   }
 }
