@@ -34,6 +34,7 @@ export default class Messages extends Vue {
   get getToken() {
     return readToken(this.$store);
   }
+
   public async getSympathies(){
     setTimeout(() => {}, 500);
     await dispatchGetSympathy(this.$store);
