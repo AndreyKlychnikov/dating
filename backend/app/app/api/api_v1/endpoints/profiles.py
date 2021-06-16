@@ -71,3 +71,15 @@ def read_user_me(
     Get current profile.
     """
     return current_user.profile
+
+
+@router.get("/{user_id}", response_model=schemas.Profile)
+def read_profile_by_owner(
+    user_id: int,
+    db: Session = Depends(deps.get_db),
+    current_user: models.UserProfile = Depends(deps.get_current_active_user),
+) -> Any:
+    """
+    Get profile by owner.
+    """
+    return crud.profile.get_by_owner(db, owner_id=user_id)
