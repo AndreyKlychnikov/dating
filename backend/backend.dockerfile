@@ -1,4 +1,4 @@
-FROM tiangolo/uvicorn-gunicorn-fastapi:python3.7-alpine3.8
+FROM tiangolo/uvicorn-gunicorn-fastapi:python3.7
 
 WORKDIR /app/
 
@@ -24,4 +24,3 @@ RUN bash -c "if [ $INSTALL_DEV == 'true' ] ; then poetry install --no-root ; els
 COPY ./app /app
 COPY ./app/static /app/static
 ENV PYTHONPATH=/app
-    
