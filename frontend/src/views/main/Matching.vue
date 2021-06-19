@@ -84,22 +84,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import { Store } from "vuex";
-import {
-  readUserProfile,
-  readUserProfileNotShown,
-  readUserProfileById,
-} from "@/store/main/getters";
-import { ISendSympathy, IUserProfileUpdate } from "@/interfaces";
-import {
-  dispatchUserLogOut,
-  dispatchGetUserProfileNotShown,
-  dispatchGetUserProfileById,
-  dispatchSympathy,
-  dispatchUpdateUserProfile,
-} from "@/store/main/actions";
-import UserProfile from "../admin/profile/UserProfile.vue";
+import {Component, Vue} from "vue-property-decorator";
+import {readUserProfile, readUserProfileNotShown,} from "@/store/main/getters";
+import {ISendSympathy, IUserProfileUpdate} from "@/interfaces";
+import {dispatchGetUserProfileNotShown, dispatchSympathy, dispatchUpdateUserProfile,} from "@/store/main/actions";
 
 @Component
 export default class Matching extends Vue {
@@ -108,9 +96,6 @@ export default class Matching extends Vue {
   }
   get userProfileNotShown() {
     return readUserProfileNotShown(this.$store);
-  }
-  get userById() {
-    return readUserById(this.$store);
   }
   get currentUserNotShown() {
     return this.userProfileNotShown![this.current];
