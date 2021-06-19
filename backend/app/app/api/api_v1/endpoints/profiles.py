@@ -1,10 +1,9 @@
-from typing import Any
-
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
-from sqlalchemy.orm import Session
+from typing import Any, List
 
 from app import models, schemas, crud
 from app.api import deps
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
+from sqlalchemy.orm import Session
 
 router = APIRouter()
 
@@ -65,7 +64,7 @@ def upload_avatar(
 @router.get("/me", response_model=schemas.Profile)
 def read_user_me(
     db: Session = Depends(deps.get_db),
-    current_user: models.UserProfile = Depends(deps.get_current_active_user),
+    current_user: models.User = Depends(deps.get_current_active_user),
 ) -> Any:
     """
     Get current profile.
@@ -77,9 +76,21 @@ def read_user_me(
 def read_profile_by_owner(
     user_id: int,
     db: Session = Depends(deps.get_db),
-    current_user: models.UserProfile = Depends(deps.get_current_active_user),
+    current_user: models.User = Depends(deps.get_current_active_user),
 ) -> Any:
     """
     Get profile by owner.
     """
     return crud.profile.get_by_owner(db, owner_id=user_id)
+
+
+@router.get("/not_shown/", response_model=List[schemas.Profile])
+def read_not_shown_profiles(
+    db: Session = Depends(deps.get_db),
+    current_user: models.User = Depends(deps.get_current_active_user),
+) -> Any:
+    """
+    Retrieve not shown profiles.
+    """
+    profiles = crud.profile.get_not_shown(db, for_user=current_user)
+    return profiles
