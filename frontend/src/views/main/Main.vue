@@ -48,22 +48,7 @@
     <v-main class="white">
       <v-container>
         <v-row>
-          <v-col cols="12" sm="2">
-            <v-sheet rounded="lg" min-height="268" outlined color="">
-              <v-container>
-                <v-list>
-                  <v-list-item to="/admin" v-show="user.is_superuser">
-                    <v-list-item-title>Admin page</v-list-item-title>
-                  </v-list-item>
-                  <v-list-item @click="logout">
-                    <v-list-item-title>LogOut</v-list-item-title>
-                  </v-list-item>
-                </v-list>
-              </v-container>
-
-              <!--  -->
-            </v-sheet>
-          </v-col>
+          <v-col cols="12" sm="2"></v-col>
 
           <v-col cols="12" sm="8">
             <v-sheet min-height="70vh" rounded="lg" outlined>
@@ -75,11 +60,7 @@
             </v-sheet>
           </v-col>
 
-          <v-col cols="12" sm="2">
-            <v-sheet rounded="lg" min-height="268" outlined>
-              <!--  -->
-            </v-sheet>
-          </v-col>
+          <v-col cols="12" sm="2"></v-col>
         </v-row>
       </v-container>
     </v-main>
