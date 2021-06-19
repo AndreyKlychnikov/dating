@@ -1,11 +1,31 @@
 <template>
   <v-app>
     <div class="mx-auto my-2">
-      <h1>You have mutual sympathy!</h1>
       <v-container fluid>
-        <div v-for="(el, id) in names" :key="id" class="mx-auto my-auto">
-          <h3>You and {{ el }} likes each other</h3>
+        <div v-for="(user, id) in users" :key="id" class="mx-auto my-2">
+          <template>
+            <v-card elevation="1" tile flat max-width="450px">
+              <v-layout column align-center>
+                <v-avatar class="my-3 mx-3">
+                  <img
+                    :src="`${api}/static/${usersProfiles[id].avatar}`"
+                    height="200px"
+                  />
+                </v-avatar>
+                <v-card-title>
+                  {{ "  " + user.full_name + " " + usersProfiles[id].age }}
+                </v-card-title>
+                <v-card-subtitle>
+                  Contact me! -> {{ user.email + " <-" }}
+                </v-card-subtitle>
+                <v-card-text>
+                  {{ usersProfiles[id].description || "no description :(" }}
+                </v-card-text>
+              </v-layout>
+            </v-card>
+          </template>
         </div>
+        <h3 v-if="!users.length">No sympathy yet :(</h3>
       </v-container>
     </div>
   </v-app>
@@ -14,7 +34,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import { Store } from "vuex";
-import { ISympathy, IUser } from "@/interfaces";
+import { ISympathy, IUser, IUserProfile } from "@/interfaces";
 import {
   readUserProfile,
   readUserSympathies,
@@ -43,30 +63,37 @@ export default class Messages extends Vue {
   public async getSympathies() {
     await dispatchGetSympathy(this.$store);
   }
+  public api: string = apiUrl;
+  public users: IUser[] = [];
+  public usersProfiles: IUserProfile[] = [];
   public async getNames() {
-    let names: string[] = [];
-    setTimeout(()=> {},1000)
+    this.users = [];
+    setTimeout(() => {}, 1000);
     let symp = this.getSympathy!;
-    console.log(symp)
+    console.log(symp);
     if (symp) {
       for (const i of symp) {
         axios
           .get<IUser>(
-            `${apiUrl}/api/v1/users/tgit  ?user_id=${i.receiver_id}`,
+            `${apiUrl}/api/v1/users/${+i.receiver_id}`,
             this.authHeaders(this.getToken)
           )
           .then((res) => {
-          console.log(res)
-            names[names.length] = res.data.full_name;
+            this.users.push(res.data);
+            axios
+              .get<IUserProfile>(
+                `${apiUrl}/api/v1/profiles/${+i.receiver_id}`,
+                this.authHeaders(this.getToken)
+              )
+              .then((r) => {
+                this.usersProfiles.push(r.data);
+              });
           });
       }
-      setTimeout(() => {
-        console.log(this.names);
-        this.names = names;
-      }, 500);
+      console.log("profiles", this.usersProfiles);
+      console.log("users", this.users);
     }
   }
-  public names: string[] = [];
   public authHeaders(token: string) {
     return {
       headers: {
@@ -76,7 +103,9 @@ export default class Messages extends Vue {
   }
   mounted() {
     this.getSympathies();
-    setTimeout(()=> {this.getNames()},200);
+    setTimeout(() => {
+      this.getNames();
+    }, 200);
   }
 }
 </script>
