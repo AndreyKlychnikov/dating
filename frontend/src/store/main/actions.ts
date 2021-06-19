@@ -7,21 +7,20 @@ import {ActionContext} from 'vuex';
 import {State} from '../state';
 import {
     commitAddNotification,
+    commitGetSympathy,
     commitRemoveNotification,
+    commitSendSympathy,
     commitSetLoggedIn,
     commitSetLogInError,
     commitSetToken,
     commitSetUser,
-    commitSetUserProfile,
-    commitSendSympathy,
-    commitGetSympathy,
     commitSetUserId,
-    commitSetUserProfileNotShown,
-    commitSetUserProfileAvatar,
-    commitSetUserProfileById
+    commitSetUserProfile,
+    commitSetUserProfileById,
+    commitSetUserProfileNotShown
 } from './mutations';
 import {AppNotification, MainState} from './state';
-import {ISendSympathy, IUserCreate, IUserCreateOpen, IUserProfile} from '@/interfaces';
+import {ISendSympathy, IUserCreateOpen, IUserProfile} from '@/interfaces';
 
 type MainContext = ActionContext<MainState, State>;
 
@@ -96,9 +95,14 @@ export const actions = {
     async actionGetUserNotShown(context: MainContext) {
         try {
             const response = await api.notShown(context.state.token);
-            
+
             if (response.data) {
-                commitSetUserProfileNotShown(context, response.data);
+                let profiles = response.data;
+                for (let i = 0; i < profiles.length; i++) {
+                    const userResponse = await api.getUser(context.state.token, profiles[i].user_id);
+                    profiles[i]["full_name"] = userResponse.data.full_name;
+                }
+                commitSetUserProfileNotShown(context, profiles);
             }
         } catch (error) {
             await dispatchCheckApiError(context, error);

@@ -20,7 +20,7 @@
             height="450"
           ></v-img>
           <h2>
-            {{ userProfile.full_name }}
+            {{ currentUserNotShown.full_name }},
             {{ currentUserNotShown.age ? currentUserNotShown.age : "" }}
           </h2>
           <div style="max-width: 500px">
