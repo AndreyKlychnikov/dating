@@ -14,7 +14,7 @@
               }"
             >
               <v-img
-                :src="`http://localhost/static/${userProfile.avatar}`"
+                :src="`${api}/static/${userProfile.avatar}`"
                 :style="{
                   height: 350 + 'px',
                   width: 100 + '%',
@@ -57,6 +57,17 @@
                 {{ userProfile.age }}
               </div>
             </div>
+            <div class="my-3">
+              <div class="subheading secondary--text text--lighten-3">Sex</div>
+
+              <div
+                v-if="userProfile.sex != null"
+                class="title primary--text text--darken-2"
+              >
+                {{ !!userProfile.sex? 'Male':'Female'  }}
+              </div>
+              <div v-else class="body-1 text--darken-2">Not Set</div>
+            </div>
 
             <v-btn
               color="orange lighten-2"
@@ -84,6 +95,7 @@
                   label="Description"
                   v-model="description"
                 ></v-text-field>
+                <v-select :items="['Male','Female']" label="Sex" @change="setSex" v-model="sexSelected" solo></v-select>
               </v-container>
             </v-form>
 
@@ -129,6 +141,7 @@ import {
   dispatchUploadUserAvatar,
   dispatchUpdateUserProfile,
 } from "@/store/main/actions";
+import { apiUrl } from "@/env";
 
 @Component
 export default class Profile extends Vue {
@@ -138,17 +151,22 @@ export default class Profile extends Vue {
   get user() {
     return readUser(this.$store);
   }
+  public api: string = apiUrl;
   public absolute: boolean = true;
   public opacity: number = 0.95;
   public overlay: boolean = false;
   public overlayAvatar: boolean = false;
 
+  public sexSelected: string | null = this.userProfile!.sex! ? "Male" : "Female";;
   public description: string | null = this.userProfile!.description!;
   public fullname: string | null = this.user!.full_name!;
   public age: number | null = this.userProfile!.age!;
   public sex: boolean | null = this.userProfile!.sex!;
   public imageData: string | Blob = "";
 
+  public setSex(el: string){
+    this.sex = el == 'Male'? true : false;
+  }
   public reset() {
     if (this.userProfile) {
       this.age = this.userProfile.age;
@@ -160,7 +178,13 @@ export default class Profile extends Vue {
     this.reset();
   }
   public async submit() {
-    const updatedProfile: IUserProfileUpdate = { description: this.description!, age: this.age!, sex: this.userProfile!.sex!};
+
+    const updatedProfile: IUserProfileUpdate = {
+      description: this.description!,
+      age: this.age!,
+      sex: this.sex! ,
+    };
+
     await dispatchUpdateUserProfile(this.$store, updatedProfile);
     this.overlay = false;
   }
