@@ -8,7 +8,7 @@
           <v-img
             v-if="currentUserNotShown && currentUserNotShown.avatar"
             class="my-4 mx-auto"
-            :src="`http://localhost/static/${currentUserNotShown.avatar}`"
+            :src="`${apiUrl}/static/${currentUserNotShown.avatar}`"
             width="450"
             height="550"
           ></v-img>
@@ -84,6 +84,7 @@
 </template>
 
 <script lang="ts">
+import { apiUrl } from '@/env';
 import {Component, Vue} from "vue-property-decorator";
 import {readUserProfile, readUserProfileNotShown,} from "@/store/main/getters";
 import {ISendSympathy, IUserProfileUpdate} from "@/interfaces";
@@ -101,6 +102,7 @@ export default class Matching extends Vue {
     return this.userProfileNotShown![this.current];
   }
   public overlay: boolean = false;
+  public apiUrl: string = apiUrl;
   public preferred_gender_str: string = "";
   public preferred_gender: boolean | null = this.userProfile!.preferred_gender!;
   public preferred_age: number[] | null = [
