@@ -27,20 +27,6 @@ def read_users(
     return users
 
 
-@router.get("/not_shown", response_model=List[schemas.User])
-def read_not_shown_users(
-    db: Session = Depends(deps.get_db),
-    skip: int = 0,
-    limit: int = 100,
-    current_user: models.User = Depends(deps.get_current_active_user),
-) -> Any:
-    """
-    Retrieve not shown users.
-    """
-    users = crud.user.get_not_shown(db, skip=skip, limit=limit, for_user_id=current_user.id)
-    return users
-
-
 @router.post("/", response_model=schemas.User)
 def create_user(
     *,

@@ -27,3 +27,6 @@ class UserProfile(Base):
     age = Column(SmallInteger, nullable=True)
     sex = Column(Boolean(), nullable=True)
     description = Column(String, default='')
+    preferred_age_min = Column(Integer, nullable=True)
+    preferred_age_max = Column(Integer, nullable=True)
+    preferred_gender = Column(Boolean, nullable=True)

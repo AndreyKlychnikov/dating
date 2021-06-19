@@ -1,12 +1,12 @@
 import shutil
 import uuid
-from typing import Any, Dict, Union
+from typing import Any, Dict, Union, List
 
 from fastapi import UploadFile
 from sqlalchemy.orm import Session
 
 from app.crud.base import CRUDBase
-from app.models.user import UserProfile
+from app.models.user import UserProfile, User
 from app.schemas.profile import ProfileUpdate, ProfileCreate
 
 
@@ -46,6 +46,20 @@ class CRUDProfile(CRUDBase[UserProfile, ProfileCreate, ProfileUpdate]):
 
     def get_by_owner(self, db: Session, owner_id):
         return db.query(UserProfile).filter(UserProfile.user_id == owner_id).first()
+
+    def get_not_shown(self, db: Session, *, skip: int = 0, limit: int = 100, for_user: User) -> List[UserProfile]:
+        showed_users = [sympathy.receiver_id for sympathy in for_user.sympathies]
+
+        user_profile = db.query(UserProfile).filter(UserProfile.user_id == for_user.id).first()
+        not_shown = db.query(UserProfile).filter(UserProfile.user_id.notin_(showed_users))
+        if user_profile.preferred_age_max:
+            not_shown = not_shown.filter(UserProfile.age <= user_profile.preferred_age_max)
+        if user_profile.preferred_age_min:
+            not_shown = not_shown.filter(UserProfile.age >= user_profile.preferred_age_min)
+        if user_profile.preferred_gender:
+            not_shown = not_shown.filter(UserProfile.sex == user_profile.preferred_gender)
+
+        return not_shown.offset(skip).limit(limit).all()
 
 
 profile = CRUDProfile(UserProfile)

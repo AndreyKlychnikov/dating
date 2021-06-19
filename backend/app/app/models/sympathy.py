@@ -11,4 +11,4 @@ class Sympathy(Base):
     sender_id = Column(Integer, ForeignKey('user.id'), primary_key=True)
     receiver_id = Column(Integer, ForeignKey('user.id'), primary_key=True)
     sender = relationship(models.User, backref="sympathies", foreign_keys=[sender_id])
-    receiver = relationship(models.User, foreign_keys=[receiver_id])
+    receiver = relationship(models.User, backref="input_sympathies", foreign_keys=[receiver_id])
