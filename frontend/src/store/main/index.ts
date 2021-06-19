@@ -13,6 +13,7 @@ const defaultState: MainState = {
   sendSympathy: null,
   sympathies: null,
   userProfile: null,
+  userProfileById: null,
   userProfileAvatar: null,
   dashboardMiniDrawer: false,
   dashboardShowDrawer: true,

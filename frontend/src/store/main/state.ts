@@ -12,8 +12,9 @@ export interface MainState {
     logInError: boolean;
     user: IUser | null;
     userProfile: IUserProfile | IUserProfileUpdate | null;
+    userProfileById: IUserProfile | null;
     userId: IUser | null;
-    userProfileNotShown: IUserProfile | null;
+    userProfileNotShown: IUserProfile[] | null;
     userProfileAvatar: FormData | null;
     sendSympathy: ISendSympathy | null;
     sympathies: ISympathy[] | null;

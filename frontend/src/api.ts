@@ -36,6 +36,9 @@ export const api = {
   async getMyProfile(token: string) {
     return axios.get<IUserProfile>(`${apiUrl}/api/v1/profiles/me`, authHeaders(token));
   },
+  async getProfileById(token: string,id: number) {
+    return axios.get<IUserProfile>(`${apiUrl}/api/v1/profiles/${id}`, authHeaders(token));
+  },
   async updateProfile(token: string, data: IUserProfileUpdate) {
     return axios.put<IUserProfileUpdate>(`${apiUrl}/api/v1/profiles`, data, authHeaders(token));
   },
@@ -62,10 +65,10 @@ export const api = {
     return axios.get(`${apiUrl}/api/v1/users/not_shown/`,authHeaders(token));    
   },
   async sendSympathy(token: string,data: ISendSympathy) {
-    return axios.post(`${apiUrl}/api/v1/users/sympathy/`,data,authHeaders(token));    
+    return axios.post(`${apiUrl}/api/v1/sympathy/`,data,authHeaders(token));    
   },
   async getSympathies(token: string) {
-    return axios.get<ISympathy[]>(`${apiUrl}/api/v1/users/sympathy/`,authHeaders(token));    
+    return axios.get<ISympathy[]>(`${apiUrl}/api/v1/sympathy/`,authHeaders(token));    
   },
   // Password
   async passwordRecovery(email: string) {

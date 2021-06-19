@@ -57,12 +57,7 @@
                 {{ userProfile.age }}
               </div>
             </div>
-            <div class="my-3">
-              <div class="subheading secondary--text text--lighten-3">Sex</div>
-              <div class="title primary--text text--darken-2">
-                {{ userProfile.sex ? "male" : "female" }}
-              </div>
-            </div>
+
             <v-btn
               color="orange lighten-2"
               class="my-5 mx-2"

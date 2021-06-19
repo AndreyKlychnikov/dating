@@ -18,6 +18,7 @@ import {
     commitSetUserId,
     commitSetUserProfileNotShown,
     commitSetUserProfileAvatar,
+    commitSetUserProfileById
 } from './mutations';
 import {AppNotification, MainState} from './state';
 import {ISendSympathy, IUserCreate, IUserProfile} from '@/interfaces';
@@ -62,6 +63,20 @@ export const actions = {
             
             if (response.data) {
                 commitSetUserProfile(context, response.data);
+            }
+        } catch (error) {
+            await dispatchCheckApiError(context, error);
+        }
+    },
+    async actionGetUserProfileById(context: MainContext,payload: number) {
+        try {
+            
+            const response = await api.getProfileById(context.state.token,payload);
+            
+            if (response.data) {
+                console.log("has data", response);
+                
+                commitSetUserProfileById(context, response.data);
             }
         } catch (error) {
             await dispatchCheckApiError(context, error);
@@ -270,6 +285,7 @@ export const dispatchCheckLoggedIn = dispatch(actions.actionCheckLoggedIn);
 export const dispatchGetUser = dispatch(actions.actionGetUser);
 export const dispatchGetUserId = dispatch(actions.actionGetUserId);
 export const dispatchGetUserProfile = dispatch(actions.actionGetUserProfile);
+export const dispatchGetUserProfileById = dispatch(actions.actionGetUserProfileById);
 export const dispatchGetUserProfileNotShown = dispatch(actions.actionGetUserNotShown);
 export const dispatchUploadUserAvatar = dispatch(actions.actionUploadUserProfileAvatar);
 export const dispatchSympathy = dispatch(actions.actionSendSympathy);

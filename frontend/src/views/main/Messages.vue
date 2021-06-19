@@ -37,27 +37,26 @@ export default class Messages extends Vue {
   get getSympathy() {
     return readUserSympathies(this.$store);
   }
-  get getUserId() {
-    return readUserId(this.$store);
-  }
   get getToken() {
     return readToken(this.$store);
   }
   public async getSympathies() {
-    setTimeout(() => {}, 500);
     await dispatchGetSympathy(this.$store);
   }
   public async getNames() {
     let names: string[] = [];
+    setTimeout(()=> {},1000)
     let symp = this.getSympathy!;
+    console.log(symp)
     if (symp) {
       for (const i of symp) {
         axios
           .get<IUser>(
-            `${apiUrl}/api/v1/users/${i.receiver_id}`,
+            `${apiUrl}/api/v1/users/tgit  ?user_id=${i.receiver_id}`,
             this.authHeaders(this.getToken)
           )
           .then((res) => {
+          console.log(res)
             names[names.length] = res.data.full_name;
           });
       }
@@ -77,7 +76,7 @@ export default class Messages extends Vue {
   }
   mounted() {
     this.getSympathies();
-    this.getNames();
+    setTimeout(()=> {this.getNames()},200);
   }
 }
 </script>
