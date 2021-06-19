@@ -109,15 +109,18 @@ export default class Matching extends Vue {
   get userProfileNotShown() {
     return readUserProfileNotShown(this.$store);
   }
+  get userById() {
+    return readUserById(this.$store);
+  }
   get currentUserNotShown() {
     return this.userProfileNotShown![this.current];
   }
   public overlay: boolean = false;
   public preferred_gender_str: string = "";
-  public preferred_gender: boolean | null = this.userProfile.preferred_gender;
+  public preferred_gender: boolean | null = this.userProfile!.preferred_gender!;
   public preferred_age: number[] | null = [
-    this.userProfile.preferred_age_min,
-    this.userProfile.preferred_age_max,
+    this.userProfile!.preferred_age_min!,
+    this.userProfile!.preferred_age_max!,
   ];
 
   current: number = 0;
@@ -129,7 +132,7 @@ export default class Matching extends Vue {
     this.current++;
   }
   public save() {
-    let gen = null;
+    let gen: boolean | null = null;
     if (this.preferred_gender_str == "Male") {
       gen = true;
     } else if (this.preferred_gender_str == "Female") {
@@ -138,8 +141,8 @@ export default class Matching extends Vue {
 
     const profile: IUserProfileUpdate = {
       preferred_gender: gen,
-      preferred_age_min: this.preferred_age[0],
-      preferred_age_max: this.preferred_age[1],
+      preferred_age_min: this.preferred_age![0],
+      preferred_age_max: this.preferred_age![1],
     };
 
     dispatchUpdateUserProfile(this.$store, profile);
