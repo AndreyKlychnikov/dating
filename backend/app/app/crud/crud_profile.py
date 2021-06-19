@@ -49,6 +49,7 @@ class CRUDProfile(CRUDBase[UserProfile, ProfileCreate, ProfileUpdate]):
 
     def get_not_shown(self, db: Session, *, skip: int = 0, limit: int = 100, for_user: User) -> List[UserProfile]:
         showed_users = [sympathy.receiver_id for sympathy in for_user.sympathies]
+        showed_users.append(for_user.id)
 
         user_profile = db.query(UserProfile).filter(UserProfile.user_id == for_user.id).first()
         not_shown = db.query(UserProfile).filter(UserProfile.user_id.notin_(showed_users))
