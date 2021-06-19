@@ -169,8 +169,8 @@ export default class Profile extends Vue {
   }
   public reset() {
     if (this.userProfile) {
-      this.age = this.userProfile.age;
-      this.description = this.userProfile.description;
+      this.age = this.userProfile!.age!;
+      this.description = this.userProfile!.description!;
     }
   }
   public cancel() {
