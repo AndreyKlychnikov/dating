@@ -26,10 +26,13 @@ export const mutations = {
     setUserProfile(state: MainState, payload: IUserProfile) {
         state.userProfile = payload;
     },
+    setUserProfileById(state: MainState, payload: IUserProfile) {
+        state.userProfileById = payload;
+    },
     setUserId(state: MainState, payload: IUser) {
         state.userId = payload;
     },
-    setUserProfileNotShown(state: MainState, payload: IUserProfile) {
+    setUserProfileNotShown(state: MainState, payload: IUserProfile[]) {
         state.userProfileNotShown = payload;
     },
     setUserProfileAvatar(state: MainState, payload: FormData) {
@@ -61,6 +64,7 @@ export const commitSetUserId = commit(mutations.setUserId);
 export const commitSendSympathy = commit(mutations.setSendSympathy);
 export const commitGetSympathy = commit(mutations.setSympathies);
 export const commitSetUserProfile = commit(mutations.setUserProfile);
+export const commitSetUserProfileById = commit(mutations.setUserProfileById);
 export const commitSetUserProfileNotShown = commit(mutations.setUserProfileNotShown);
 export const commitSetUserProfileAvatar = commit(mutations.setUserProfileAvatar);
 export const commitAddNotification = commit(mutations.addNotification);
