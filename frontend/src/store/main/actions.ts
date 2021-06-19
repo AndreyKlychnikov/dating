@@ -21,7 +21,7 @@ import {
     commitSetUserProfileById
 } from './mutations';
 import {AppNotification, MainState} from './state';
-import {ISendSympathy, IUserCreate, IUserProfile} from '@/interfaces';
+import {ISendSympathy, IUserCreate, IUserCreateOpen, IUserProfile} from '@/interfaces';
 
 type MainContext = ActionContext<MainState, State>;
 
@@ -261,7 +261,7 @@ export const actions = {
             commitAddNotification(context, {color: 'error', content: 'Error resetting password'});
         }
     },
-    async actionCreateUserOpen(context: MainContext, payload: IUserCreate) {
+    async actionCreateUserOpen(context: MainContext, payload: IUserCreateOpen) {
         const loadingNotification = { content: 'Registrating', showProgress: true };
         try {
             commitAddNotification(context, loadingNotification);
