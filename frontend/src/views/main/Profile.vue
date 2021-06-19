@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row justify="center">
       <v-col col="6">
-        <div class="headline primary--text">User Profile</div>
+        <div class="headline">User Profile</div>
         <v-divider />
         <v-row>
           <v-col cols="auto">
@@ -31,7 +31,7 @@
               <div class="subheading secondary--text text--lighten-3">
                 Full Name
               </div>
-              <div class="title primary--text text--darken-2">
+              <div class="title text--darken-2">
                 {{ user.full_name }}
               </div>
             </div>
@@ -39,7 +39,7 @@
               <div class="subheading secondary--text text--lighten-3">
                 Email
               </div>
-              <div class="title primary--text text--darken-2">
+              <div class="title text--darken-2">
                 {{ user.email }}
               </div>
             </div>
@@ -47,13 +47,13 @@
               <div class="subheading secondary--text text--lighten-3">
                 Discritpion
               </div>
-              <div class="title primary--text text--darken-2">
+              <div class="title text--darken-2">
                 {{ userProfile.description }}
               </div>
             </div>
             <div class="my-3">
               <div class="subheading secondary--text text--lighten-3">Age</div>
-              <div class="title primary--text text--darken-2">
+              <div class="title text--darken-2">
                 {{ userProfile.age }}
               </div>
             </div>
@@ -62,7 +62,7 @@
 
               <div
                 v-if="userProfile.sex != null"
-                class="title primary--text text--darken-2"
+                class="title text--darken-2"
               >
                 {{ !!userProfile.sex? 'Male':'Female'  }}
               </div>
