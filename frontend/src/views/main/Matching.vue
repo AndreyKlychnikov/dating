@@ -24,12 +24,12 @@
             {{ currentUserNotShown.age ? currentUserNotShown.age : "" }}
           </h2>
           <div style="max-width: 500px">
-            <h2>
+            <p>
               {{
                 (currentUserNotShown && currentUserNotShown.description) ||
                 "No description :( "
               }}
-            </h2>
+            </p>
           </div>
         </div>
         <v-row :justify="'space-between'" class="my-2">
