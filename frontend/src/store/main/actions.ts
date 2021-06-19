@@ -14,7 +14,8 @@ import {
     commitSetUser,
     commitSetUserProfile,
     commitSendSympathy,
-    commitGetSympathy,commitSetUserId,
+    commitGetSympathy,
+    commitSetUserId,
     commitSetUserProfileNotShown,
     commitSetUserProfileAvatar,
 } from './mutations';

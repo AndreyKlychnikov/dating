@@ -24,7 +24,16 @@
           to="/main/profile"
           exact-active-class="blue--text text--accent-4"
         >
+        
+        <v-badge v-if="!userProfile.avatar || !userProfile.description || !userProfile.age"
+          color="primary"
+          dot
+        >
           Profile
+        </v-badge>
+          <span v-else>Profile</span>
+        
+
         </v-tab>
       </v-tabs>
 
@@ -80,7 +89,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 
-import { readHasAdminAccess, readUser } from "@/store/main/getters";
+import { readHasAdminAccess, readUser, readUserProfile } from "@/store/main/getters";
 import { dispatchUserLogOut } from "@/store/main/actions";
 import { store } from "@/store";
 
@@ -97,6 +106,9 @@ export default class Main extends Vue {
   get user() {
     return readUser(this.$store);
   }
+  get userProfile() {
+    return readUserProfile(this.$store);
+  }
 
   public beforeRouteEnter(to, from, next) {
     routeGuardMain(to, from, next);
@@ -108,6 +120,9 @@ export default class Main extends Vue {
 
   public async logout() {
     await dispatchUserLogOut(this.$store);
+  }
+  mounted() {
+    console.log(this.userProfile)
   }
 }
 </script>

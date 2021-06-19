@@ -33,11 +33,11 @@
                 </v-alert>
               </div>
               <!-- <v-flex class="caption text-xs-right"><router-link to="/recover-password">Forgot your password?</router-link></v-flex> -->
-              <v-flex class="caption text-xs-right"><router-link to="/signup">SignUp</router-link></v-flex>
+              <v-flex class="caption text-body-2">Not register yet? <router-link to="/signup">SignUp</router-link></v-flex>
             </v-card-text>
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn @click.prevent="submit">Login</v-btn>
+              <v-btn class="mb-2 mr-2" @click.prevent="submit">Login</v-btn>
             </v-card-actions>
           </v-card>
         </v-flex>

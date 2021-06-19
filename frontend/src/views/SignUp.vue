@@ -6,7 +6,7 @@
           <v-card class="elevation-12">
             <v-toolbar color="primary">
               <v-toolbar-title
-                >Регистрация</v-toolbar-title
+                >Registration</v-toolbar-title
               >
               <v-spacer></v-spacer>
             </v-toolbar>
@@ -37,7 +37,7 @@
                   v-model="user.full_name"
                   prepend-icon="person"
                   name="full_name"
-                  label="full_name"
+                  label="Name"
                   id="full_name"
                   type="text"
                   required

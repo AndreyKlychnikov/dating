@@ -125,13 +125,6 @@ export default new Router({
                                 /* webpackChunkName: "main-Profile" */
                                 './views/main/Profile.vue'),
                         },
-                        {
-                            path: 'updates',
-                            component: () => import(
-                                /* webpackChunkName: "main-Updates" */
-                                './views/main/Updates.vue'),
-                        },
-
                     ],
                 },
             ],

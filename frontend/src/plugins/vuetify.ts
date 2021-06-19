@@ -9,7 +9,7 @@ const vuetify = new Vuetify({
   theme: {
     themes: {
       light: {
-        primary: "#0000FF"        ,
+        primary: "#4169E1"        ,
         secondary: "#212121"
       }
     }
