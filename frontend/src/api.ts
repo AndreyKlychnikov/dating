@@ -2,7 +2,7 @@ import axios from 'axios';
 import { apiUrl } from '@/env';
 import { IUser, IUserUpdate, IUserCreate,
   IUserProfile, IUserProfileUpdate,
-  IUserProfileCreate, IUserCreateOpen, ISendSympathy, ISympathy
+  IUserCreateOpen, ISendSympathy, ISympathy
 } from './interfaces';
 
 function authHeaders(token: string) {
@@ -42,9 +42,7 @@ export const api = {
   async updateProfile(token: string, data: IUserProfileUpdate) {
     return axios.put<IUserProfileUpdate>(`${apiUrl}/api/v1/profiles`, data, authHeaders(token));
   },
-  async createProfile(token: string, data: IUserProfileCreate) {
-    return axios.post<IUserProfileCreate>(`${apiUrl}/api/v1/profiles`, data,  authHeaders(token));
-  },
+
   async uploadAvatar(token: string, data: FormData) {
     return axios.post(`${apiUrl}/api/v1/profiles/upload_avatar/`, data, authHeaders(token));
   },
@@ -62,7 +60,7 @@ export const api = {
     return axios.post(`${apiUrl}/api/v1/users/open/`, data);    
   },
   async notShown(token: string) {
-    return axios.get(`${apiUrl}/api/v1/users/not_shown/`,authHeaders(token));    
+    return axios.get(`${apiUrl}/api/v1/profiles/not_shown/`,authHeaders(token));    
   },
   async sendSympathy(token: string,data: ISendSympathy) {
     return axios.post(`${apiUrl}/api/v1/sympathy/`,data,authHeaders(token));    
