@@ -97,7 +97,6 @@
       :opacity="opacity"
       :value="overlay"
     >
-      <v-text-field label="Regular"></v-text-field>
       <v-card class="mx-auto my-12" light min-width="450">
         <v-form ref="form" lazy-validation>
           <v-container fluid>
