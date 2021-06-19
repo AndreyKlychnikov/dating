@@ -53,11 +53,11 @@ class CRUDProfile(CRUDBase[UserProfile, ProfileCreate, ProfileUpdate]):
 
         user_profile = db.query(UserProfile).filter(UserProfile.user_id == for_user.id).first()
         not_shown = db.query(UserProfile).filter(UserProfile.user_id.notin_(showed_users))
-        if user_profile.preferred_age_max:
+        if user_profile.preferred_age_max is not None:
             not_shown = not_shown.filter(UserProfile.age <= user_profile.preferred_age_max)
-        if user_profile.preferred_age_min:
+        if user_profile.preferred_age_min is not None:
             not_shown = not_shown.filter(UserProfile.age >= user_profile.preferred_age_min)
-        if user_profile.preferred_gender:
+        if user_profile.preferred_gender is not None:
             not_shown = not_shown.filter(UserProfile.sex == user_profile.preferred_gender)
 
         return not_shown.offset(skip).limit(limit).all()
