@@ -2,13 +2,12 @@
   <v-container>
     <div class="mx-auto" v-if="userProfileNotShown">
       <div v-if="userProfileNotShown.length == 0">
-        Unfortunately, we cant found users with yours preferences :(
+        Unfortunately, we cant find users with yours preferences :(
       </div>
       <div
+        class="mx-auto"
         v-else-if="
-          currentUserNotShown.avatar &&
-          currentUserNotShown.description &&
-          currentUserNotShown.age
+          userProfile.avatar && userProfile.description && userProfile.age
         "
       >
         <div>
@@ -42,7 +41,9 @@
           </div>
         </div>
       </div>
-      <h2 v-else>Please Update your profile!</h2>
+      <div class="my-2 text-h4 text-center text--lighten-2" v-else>
+        Please Update your profile!
+      </div>
       <v-row
         :justify="'space-between'"
         class="my-2 mt-4 mx-auto"
@@ -58,7 +59,7 @@
         </v-tooltip>
         <v-tooltip bottom>
           <template v-slot:activator="{ on, attrs }">
-            <v-btn @click="overlay = !overlay" icon  v-bind="attrs" v-on="on"
+            <v-btn @click="overlay = !overlay" icon v-bind="attrs" v-on="on"
               ><v-icon color="black">mdi-cog</v-icon></v-btn
             >
           </template>
@@ -66,13 +67,12 @@
         </v-tooltip>
         <v-tooltip bottom>
           <template v-slot:activator="{ on, attrs }">
-        <v-btn @click="notlike" icon v-bind="attrs" v-on="on"
-          ><v-icon color="black">mdi-close</v-icon></v-btn
-        >
+            <v-btn @click="notlike" icon v-bind="attrs" v-on="on"
+              ><v-icon color="black">mdi-close</v-icon></v-btn
+            >
           </template>
           <span>I dont like this</span>
         </v-tooltip>
-
       </v-row>
       <v-overlay :absolute="false" :value="overlay">
         <v-sheet
@@ -90,7 +90,12 @@
                 label="Prefered gender"
                 v-model="preferred_gender_str"
               ></v-select>
-              <v-range-slider max="100" min="0" v-model="preferred_age" light>
+              <v-switch
+              light
+                v-model="preferr_age"
+                label="Age filter"
+              ></v-switch>
+              <v-range-slider max="100" min="0" v-model="preferred_age" :disabled="!preferr_age" light>
                 <template v-slot:prepend>
                   <div class="mt-0 pt-0 text-caption">
                     {{ preferred_age[0] }}
@@ -138,18 +143,15 @@ export default class Matching extends Vue {
   public apiUrl: string = apiUrl;
   public preferred_gender_str: string = "";
   public preferred_gender: boolean | null = this.userProfile!.preferred_gender!;
-  public preferred_age: number[] | null = [
-    this.userProfile!.preferred_age_min!,
-    this.userProfile!.preferred_age_max!,
-  ];
-
+  public preferred_age: number[] = [0,0];
+  public preferr_age: boolean = false;
   current: number = 0;
   public like() {
     const user = {
       receiver_id: this.userProfileNotShown![this.current]!.id,
     };
     dispatchSympathy(this.$store, user as ISendSympathy);
-    this.current++;
+    this.next();
   }
   public save() {
     let gen: boolean | null = null;
@@ -161,18 +163,21 @@ export default class Matching extends Vue {
 
     const profile: IUserProfileUpdate = {
       preferred_gender: gen,
-      preferred_age_min: this.preferred_age![0],
-      preferred_age_max: this.preferred_age![1],
+      preferred_age_min: this.preferr_age? this.preferred_age![0]:null,
+      preferred_age_max: this.preferr_age? this.preferred_age![1]:null,
     };
 
     dispatchUpdateUserProfile(this.$store, profile);
     setTimeout(() => {
       dispatchGetUserProfileNotShown(this.$store);
-    }, 100);
+    },300);
 
     this.overlay = false;
   }
   public notlike() {
+    this.next();
+  }
+  next() {
     if (this.current + 1 < this.userProfileNotShown!.length) {
       this.current++;
     } else {
@@ -183,6 +188,7 @@ export default class Matching extends Vue {
   public updateFilter() {}
   mounted() {
     dispatchGetUserProfileNotShown(this.$store);
+    setTimeout(()=>this.preferred_age = [this.userProfile!.preferred_age_min!,this.userProfile!.preferred_age_max!],200)
   }
 }
 </script>
