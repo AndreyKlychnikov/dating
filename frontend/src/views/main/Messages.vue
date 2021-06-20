@@ -25,7 +25,7 @@
             </v-card>
           </template>
         </div>
-        <h3 v-if="!users.length">No sympathy yet :(</h3>
+        <div v-if="!users.length" class="my-2 text-h4 text-center text--lighten-2">No sympathy yet :(</div>
       </v-container>
     </div>
 
