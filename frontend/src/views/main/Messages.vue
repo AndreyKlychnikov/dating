@@ -1,10 +1,10 @@
 <template>
-  <v-app>
+
     <div class="mx-auto my-2">
       <v-container fluid>
         <div v-for="(user, id) in users" :key="id" class="mx-auto my-2">
           <template>
-            <v-card elevation="1" tile flat max-width="450px">
+            <v-card elevation="1" tile flat max-width="450px" class="mx-auto">
               <v-layout column align-center>
                 <v-avatar class="my-3 mx-3">
                   <img
@@ -28,7 +28,7 @@
         <h3 v-if="!users.length">No sympathy yet :(</h3>
       </v-container>
     </div>
-  </v-app>
+
 </template>
 
 <script lang="ts">
