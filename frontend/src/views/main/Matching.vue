@@ -1,11 +1,11 @@
 <template>
   <v-app>
-    <div class="mx-auto">
-      <div v-if="!userProfileNotShown || userProfileNotShown.length">
+    <div class="mx-auto" v-if="userProfileNotShown">
+      <div v-if="userProfileNotShown.length == 0">
         Unfortunately, we cant found users with yours preferences :(
       </div>
-      <div
-        v-if="currentUserNotShown.avatar && currentUserNotShown.description && currentUserNotShown.age"
+      <div 
+        v-else-if="currentUserNotShown.avatar && currentUserNotShown.description && currentUserNotShown.age"
       >
         <div>
           <v-img
@@ -35,7 +35,9 @@
             </p>
           </div>
         </div>
-        <v-row :justify="'space-between'" class="my-2">
+      </div>
+      <h2 v-else>Please Update your profile!</h2>
+              <v-row :justify="'space-between'" class="my-2">
           <v-btn c @click="like" icon
             ><v-icon color="red">mdi-heart</v-icon></v-btn
           >
@@ -46,8 +48,6 @@
             ><v-icon color="black">mdi-close</v-icon></v-btn
           >
         </v-row>
-      </div>
-      <h2 v-else>Please Update your profile!</h2>
       <v-overlay :absolute="false" :value="overlay">
         <v-sheet
           color="white"
@@ -136,7 +136,10 @@ export default class Matching extends Vue {
     };
 
     dispatchUpdateUserProfile(this.$store, profile);
+    setTimeout(() => {
     dispatchGetUserProfileNotShown(this.$store);
+      
+    }, 100);
 
     this.overlay = false;
   }
