@@ -69,7 +69,7 @@
           <v-col cols="12" sm="2"></v-col>
 
           <v-col lg="6" md="8" sm="12" class="mx-auto">
-            <v-sheet min-height="80vh" rounded="lg" outlined>
+            <v-sheet rounded="lg" outlined>
               <!-- <v-container fluid> -->
               <router-view></router-view>
               <!-- </v-container> -->
