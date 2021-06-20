@@ -1,11 +1,15 @@
-<template>
-  <v-app>
+<template >
+  <v-container>
     <div class="mx-auto" v-if="userProfileNotShown">
       <div v-if="userProfileNotShown.length == 0">
         Unfortunately, we cant found users with yours preferences :(
       </div>
-      <div 
-        v-else-if="currentUserNotShown.avatar && currentUserNotShown.description && currentUserNotShown.age"
+      <div
+        v-else-if="
+          currentUserNotShown.avatar &&
+          currentUserNotShown.description &&
+          currentUserNotShown.age
+        "
       >
         <div>
           <v-img
@@ -22,32 +26,54 @@
             width="450"
             height="450"
           ></v-img>
-          <h2>
-            {{ currentUserNotShown.full_name }},
-            {{ currentUserNotShown.age ? currentUserNotShown.age : "" }}
-          </h2>
-          <div style="max-width: 500px">
-            <p>
-              {{
-                (currentUserNotShown && currentUserNotShown.description) ||
-                "No description :( "
-              }}
-            </p>
+          <div style="max-width: 500px" class="mx-auto">
+            <div class="title text--lighten-3">
+              {{ currentUserNotShown.full_name }},
+              {{ currentUserNotShown.age ? currentUserNotShown.age : "" }}
+            </div>
+            <div style="max-width: 500px">
+              <p>
+                {{
+                  (currentUserNotShown && currentUserNotShown.description) ||
+                  "No description :( "
+                }}
+              </p>
+            </div>
           </div>
         </div>
       </div>
       <h2 v-else>Please Update your profile!</h2>
-              <v-row :justify="'space-between'" class="my-2">
-          <v-btn c @click="like" icon
-            ><v-icon color="red">mdi-heart</v-icon></v-btn
-          >
-          <v-btn @click="overlay = !overlay" icon
-            ><v-icon color="black">mdi-cog</v-icon></v-btn
-          >
-          <v-btn @click="notlike" icon
-            ><v-icon color="black">mdi-close</v-icon></v-btn
-          >
-        </v-row>
+      <v-row
+        :justify="'space-between'"
+        class="my-2 mt-4 mx-auto"
+        style="max-width: 600px"
+      >
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn v-bind="attrs" v-on="on" @click="like" icon
+              ><v-icon color="red">mdi-heart</v-icon></v-btn
+            >
+          </template>
+          <span>I like this!</span>
+        </v-tooltip>
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn @click="overlay = !overlay" icon  v-bind="attrs" v-on="on"
+              ><v-icon color="black">mdi-cog</v-icon></v-btn
+            >
+          </template>
+          <span>Filter settings</span>
+        </v-tooltip>
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on, attrs }">
+        <v-btn @click="notlike" icon v-bind="attrs" v-on="on"
+          ><v-icon color="black">mdi-close</v-icon></v-btn
+        >
+          </template>
+          <span>I dont like this</span>
+        </v-tooltip>
+
+      </v-row>
       <v-overlay :absolute="false" :value="overlay">
         <v-sheet
           color="white"
@@ -83,15 +109,19 @@
         </v-sheet>
       </v-overlay>
     </div>
-  </v-app>
+  </v-container>
 </template>
 
 <script lang="ts">
-import { apiUrl } from '@/env';
-import {Component, Vue} from "vue-property-decorator";
-import {readUserProfile, readUserProfileNotShown,} from "@/store/main/getters";
-import {ISendSympathy, IUserProfileUpdate} from "@/interfaces";
-import {dispatchGetUserProfileNotShown, dispatchSympathy, dispatchUpdateUserProfile,} from "@/store/main/actions";
+import { apiUrl } from "@/env";
+import { Component, Vue } from "vue-property-decorator";
+import { readUserProfile, readUserProfileNotShown } from "@/store/main/getters";
+import { ISendSympathy, IUserProfileUpdate } from "@/interfaces";
+import {
+  dispatchGetUserProfileNotShown,
+  dispatchSympathy,
+  dispatchUpdateUserProfile,
+} from "@/store/main/actions";
 
 @Component
 export default class Matching extends Vue {
@@ -137,8 +167,7 @@ export default class Matching extends Vue {
 
     dispatchUpdateUserProfile(this.$store, profile);
     setTimeout(() => {
-    dispatchGetUserProfileNotShown(this.$store);
-      
+      dispatchGetUserProfileNotShown(this.$store);
     }, 100);
 
     this.overlay = false;
