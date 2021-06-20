@@ -92,16 +92,26 @@
             <div class="my-auto">
               <v-select
                 light
-                :items="[{text: 'Not set', value: null}, {text: 'Male', value: true}, {text: 'Female', value: false}]"
+                :items="[
+                  { text: 'Not set', value: null },
+                  { text: 'Male', value: true },
+                  { text: 'Female', value: false },
+                ]"
                 label="Preferred gender"
                 v-model="preferred_gender_str"
               ></v-select>
               <v-switch
-              light
+                light
                 v-model="preferr_age"
                 label="Age filter"
               ></v-switch>
-              <v-range-slider max="100" min="0" v-model="preferred_age" :disabled="!preferr_age" light>
+              <v-range-slider
+                max="100"
+                min="0"
+                v-model="preferred_age"
+                :disabled="!preferr_age"
+                light
+              >
                 <template v-slot:prepend>
                   <div class="mt-0 pt-0 text-caption">
                     {{ preferred_age[0] }}
@@ -147,10 +157,11 @@ export default class Matching extends Vue {
   }
   public overlay: boolean = false;
   public apiUrl: string = apiUrl;
-  public preferred_gender_str: boolean| null = null;
+  public preferred_gender_str: boolean | null =
+    this.userProfile!.preferred_gender!;
   public preferred_gender: boolean | null = this.userProfile!.preferred_gender!;
-  public preferred_age: number[] = [0,0];
-  public preferr_age: boolean = false;
+  public preferred_age: number[] = [0, 10];
+  public preferr_age: boolean = !!this.userProfile!.preferred_age_min;
   current: number = 0;
   public like() {
     const user = {
@@ -162,14 +173,14 @@ export default class Matching extends Vue {
   public save() {
     const profile: IUserProfileUpdate = {
       preferred_gender: this.preferred_gender_str,
-      preferred_age_min: this.preferr_age? this.preferred_age![0]:null,
-      preferred_age_max: this.preferr_age? this.preferred_age![1]:null,
+      preferred_age_min: this.preferr_age ? this.preferred_age![0] : null,
+      preferred_age_max: this.preferr_age ? this.preferred_age![1] : null,
     };
 
     dispatchUpdateUserProfile(this.$store, profile);
     setTimeout(() => {
       dispatchGetUserProfileNotShown(this.$store);
-    },300);
+    }, 300);
 
     this.overlay = false;
   }
@@ -187,7 +198,13 @@ export default class Matching extends Vue {
   public updateFilter() {}
   mounted() {
     dispatchGetUserProfileNotShown(this.$store);
-    setTimeout(()=>this.preferred_age = [this.userProfile!.preferred_age_min!,this.userProfile!.preferred_age_max!],200)
+    console.log(this.userProfile);
+    setTimeout(() => {
+      this.preferred_age = [
+        this.userProfile!.preferred_age_min!,
+        this.userProfile!.preferred_age_max!,
+      ];
+    }, 200);
   }
 }
 </script>
