@@ -86,8 +86,8 @@
             <div class="my-auto">
               <v-select
                 light
-                :items="['Not set', 'Male', 'Female']"
-                label="Prefered gender"
+                :items="[{text: 'Not set', value: null}, {text: 'Male', value: true}, {text: 'Female', value: false}]"
+                label="Preferred gender"
                 v-model="preferred_gender_str"
               ></v-select>
               <v-switch
@@ -141,7 +141,7 @@ export default class Matching extends Vue {
   }
   public overlay: boolean = false;
   public apiUrl: string = apiUrl;
-  public preferred_gender_str: string = "";
+  public preferred_gender_str: boolean| null = null;
   public preferred_gender: boolean | null = this.userProfile!.preferred_gender!;
   public preferred_age: number[] = [0,0];
   public preferr_age: boolean = false;
@@ -154,15 +154,8 @@ export default class Matching extends Vue {
     this.next();
   }
   public save() {
-    let gen: boolean | null = null;
-    if (this.preferred_gender_str == "Male") {
-      gen = true;
-    } else if (this.preferred_gender_str == "Female") {
-      gen = false;
-    }
-
     const profile: IUserProfileUpdate = {
-      preferred_gender: gen,
+      preferred_gender: this.preferred_gender_str,
       preferred_age_min: this.preferr_age? this.preferred_age![0]:null,
       preferred_age_max: this.preferr_age? this.preferred_age![1]:null,
     };
