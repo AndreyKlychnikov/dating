@@ -18,33 +18,39 @@
           to="/main/profile"
           exact-active-class="blue--text text--accent-4"
         >
-        
-        <v-badge v-if="!userProfile.avatar || !userProfile.description || !userProfile.age"
-          color="primary"
-          dot
-        >
-          Profile
-        </v-badge>
+          <v-badge
+            v-if="
+              !userProfile.avatar ||
+              !userProfile.description ||
+              !userProfile.age
+            "
+            color="primary"
+            dot
+          >
+            Profile
+          </v-badge>
           <span v-else>Profile</span>
-        
-
         </v-tab>
       </v-tabs>
 
       <v-menu bottom left offset-y>
         <template v-slot:activator="{ on, attrs }">
-          <v-avatar
-              icon
-              v-bind="attrs"
-              v-on="on"
-              color="grey darken-1 shrink"
-          >
-            <v-img
-                :src="`${apiUrl}/static/${userProfile.avatar}`"
-            ></v-img>
+          <v-avatar icon v-bind="attrs" v-on="on" color="grey darken-1 shrink">
+            <v-img :src="`${apiUrl}/static/${userProfile.avatar}`"></v-img>
           </v-avatar>
         </template>
         <v-list>
+          <v-list-item
+            @click="$router.push('/admin/dashboard')"
+            v-if="adminAccess"
+          >
+            <v-list-item-content>
+              <v-list-item-title>Admin page</v-list-item-title>
+            </v-list-item-content>
+            <v-list-item-action>
+              <v-icon>mdi-crown</v-icon>
+            </v-list-item-action>
+          </v-list-item>
           <v-list-item @click="logout">
             <v-list-item-content>
               <v-list-item-title>Logout</v-list-item-title>
@@ -62,11 +68,11 @@
         <v-row>
           <v-col cols="12" sm="2"></v-col>
 
-          <v-col cols="12" sm="8">
-            <v-sheet min-height="70vh" rounded="lg" outlined>
-              <v-container fluid>
-                <router-view></router-view>
-              </v-container>
+          <v-col lg="4" md="6" sm="12" class="mx-auto">
+            <v-sheet min-height="80vh" rounded="lg" outlined>
+              <!-- <v-container fluid> -->
+              <router-view></router-view>
+              <!-- </v-container> -->
 
               <!--  -->
             </v-sheet>
@@ -80,11 +86,15 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 
-import {readUser, readUserProfile} from "@/store/main/getters";
-import {dispatchUserLogOut} from "@/store/main/actions";
-import {apiUrl} from '@/env';
+import {
+  readUser,
+  readUserProfile,
+  readHasAdminAccess,
+} from "@/store/main/getters";
+import { dispatchUserLogOut } from "@/store/main/actions";
+import { apiUrl } from "@/env";
 
 const routeGuardMain = async (to, from, next) => {
   if (to.path === "/main") {
@@ -100,6 +110,9 @@ export default class Main extends Vue {
 
   get user() {
     return readUser(this.$store);
+  }
+  get adminAccess() {
+    return readHasAdminAccess(this.$store);
   }
   get userProfile() {
     return readUserProfile(this.$store);
@@ -117,7 +130,7 @@ export default class Main extends Vue {
     await dispatchUserLogOut(this.$store);
   }
   mounted() {
-    console.log(this.userProfile)
+    console.log(this.userProfile);
   }
 }
 </script>
