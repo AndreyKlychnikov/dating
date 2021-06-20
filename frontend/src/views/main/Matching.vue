@@ -1,8 +1,11 @@
 <template>
   <v-app>
     <div class="mx-auto">
+      <div v-if="!userProfileNotShown || userProfileNotShown.length">
+        Unfortunately, we cant found users with yours preferrences :(
+      </div>
       <div
-        v-if="userProfile.avatar && userProfile.description && userProfile.age"
+        v-if="currentUserNotShown.avatar && currentUserNotShown.description && currentUserNotShown.age"
       >
         <div>
           <v-img
@@ -99,7 +102,6 @@ import {
   dispatchSympathy,
   dispatchUpdateUserProfile,
 } from "@/store/main/actions";
-import UserProfile from "../admin/profile/UserProfile.vue";
 
 @Component
 export default class Matching extends Vue {
@@ -109,9 +111,9 @@ export default class Matching extends Vue {
   get userProfileNotShown() {
     return readUserProfileNotShown(this.$store);
   }
-  get userById() {
-    return readUserById(this.$store);
-  }
+  // get userById() {
+  //   return readUserById(this.$store);
+  // }
   get currentUserNotShown() {
     return this.userProfileNotShown![this.current];
   }
