@@ -100,7 +100,7 @@
       <v-card class="mx-auto my-12" light min-width="450">
         <v-form ref="form" lazy-validation>
           <v-container fluid>
-            <h2 class="ma-4">Change profile</h2>
+             <div class="headline mt-0">Edit Profile</div>
             <v-text-field label="age" v-model.number="age"></v-text-field>
             <v-text-field
               label="Description"
