@@ -2,7 +2,7 @@
   <v-app>
     <div class="mx-auto">
       <div v-if="!userProfileNotShown || userProfileNotShown.length">
-        Unfortunately, we cant found users with yours preferrences :(
+        Unfortunately, we cant found users with yours preferences :(
       </div>
       <div
         v-if="currentUserNotShown.avatar && currentUserNotShown.description && currentUserNotShown.age"
