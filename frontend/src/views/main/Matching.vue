@@ -11,7 +11,7 @@
           <v-img
             v-if="currentUserNotShown && currentUserNotShown.avatar"
             class="my-4 mx-auto"
-            :src="`http://localhost/static/${currentUserNotShown.avatar}`"
+            :src="`${apiUrl}/static/${currentUserNotShown.avatar}`"
             width="450"
             height="550"
           ></v-img>
@@ -23,16 +23,16 @@
             height="450"
           ></v-img>
           <h2>
-            {{ userProfile.full_name }}
+            {{ currentUserNotShown.full_name }},
             {{ currentUserNotShown.age ? currentUserNotShown.age : "" }}
           </h2>
           <div style="max-width: 500px">
-            <h2>
+            <p>
               {{
                 (currentUserNotShown && currentUserNotShown.description) ||
                 "No description :( "
               }}
-            </h2>
+            </p>
           </div>
         </div>
         <v-row :justify="'space-between'" class="my-2">
@@ -87,21 +87,11 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import { Store } from "vuex";
-import {
-  readUserProfile,
-  readUserProfileNotShown,
-  readUserProfileById,
-} from "@/store/main/getters";
-import { ISendSympathy, IUserProfileUpdate } from "@/interfaces";
-import {
-  dispatchUserLogOut,
-  dispatchGetUserProfileNotShown,
-  dispatchGetUserProfileById,
-  dispatchSympathy,
-  dispatchUpdateUserProfile,
-} from "@/store/main/actions";
+import { apiUrl } from '@/env';
+import {Component, Vue} from "vue-property-decorator";
+import {readUserProfile, readUserProfileNotShown,} from "@/store/main/getters";
+import {ISendSympathy, IUserProfileUpdate} from "@/interfaces";
+import {dispatchGetUserProfileNotShown, dispatchSympathy, dispatchUpdateUserProfile,} from "@/store/main/actions";
 
 @Component
 export default class Matching extends Vue {
@@ -111,13 +101,11 @@ export default class Matching extends Vue {
   get userProfileNotShown() {
     return readUserProfileNotShown(this.$store);
   }
-  // get userById() {
-  //   return readUserById(this.$store);
-  // }
   get currentUserNotShown() {
     return this.userProfileNotShown![this.current];
   }
   public overlay: boolean = false;
+  public apiUrl: string = apiUrl;
   public preferred_gender_str: string = "";
   public preferred_gender: boolean | null = this.userProfile!.preferred_gender!;
   public preferred_age: number[] | null = [

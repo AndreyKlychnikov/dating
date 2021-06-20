@@ -29,6 +29,7 @@ export interface IUserCreateOpen {
 
 export interface IUserProfile {
     description: string;
+    full_name?: string | null;
     age: number;
     sex: boolean;
     preferred_age_min?: number | null;
