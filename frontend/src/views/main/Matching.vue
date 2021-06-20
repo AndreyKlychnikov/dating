@@ -49,30 +49,36 @@
         class="my-2 mt-4 mx-auto"
         style="max-width: 600px"
       >
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn v-bind="attrs" v-on="on" @click="like" icon
-              ><v-icon color="red">mdi-heart</v-icon></v-btn
-            >
-          </template>
-          <span>I like this!</span>
-        </v-tooltip>
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn @click="overlay = !overlay" icon v-bind="attrs" v-on="on"
-              ><v-icon color="black">mdi-cog</v-icon></v-btn
-            >
-          </template>
-          <span>Filter settings</span>
-        </v-tooltip>
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn @click="notlike" icon v-bind="attrs" v-on="on"
-              ><v-icon color="black">mdi-close</v-icon></v-btn
-            >
-          </template>
-          <span>I dont like this</span>
-        </v-tooltip>
+        <v-col cols="4" class="text-center">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn v-bind="attrs" v-on="on" @click="like" elevation="1" large icon>
+                <v-icon color="red">mdi-heart</v-icon>
+              </v-btn>
+            </template>
+            <span>I like this!</span>
+          </v-tooltip>
+        </v-col>
+        <v-col cols="4" class="text-center">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn @click="overlay = !overlay" icon v-bind="attrs" v-on="on" elevation="1" large>
+                <v-icon color="black">mdi-cog</v-icon>
+              </v-btn>
+            </template>
+            <span>Filter settings</span>
+          </v-tooltip>
+        </v-col>
+        <v-col cols="4" class="text-center">
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn @click="notlike" icon v-bind="attrs" v-on="on" elevation="1" large>
+                <v-icon color="black">mdi-close</v-icon>
+              </v-btn>
+            </template>
+            <span>I dont like this</span>
+          </v-tooltip>
+        </v-col>
       </v-row>
       <v-overlay :absolute="false" :value="overlay">
         <v-sheet
