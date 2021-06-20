@@ -6,10 +6,10 @@
       </v-col>
       <v-col class="text-right">
         <v-btn
-            outlined
-            color="primary"
-            class="mb-2 mt-0"
-            @click="overlay = !overlay"
+          outlined
+          color="primary"
+          class="mb-2 mt-0"
+          @click="overlay = !overlay"
         >
           Edit
           <v-icon>mdi-pencil</v-icon>
@@ -17,13 +17,10 @@
       </v-col>
     </v-row>
 
-
     <v-divider />
     <v-row>
       <v-col cols="6">
-        <div
-          class="my-4"
-        >
+        <div class="my-4">
           <v-hover v-slot="{ hover }">
             <v-img
               :src="`${api}/static/${userProfile.avatar}`"
@@ -34,16 +31,11 @@
               }"
             >
               <v-fade-transition>
-                <v-overlay
-                    v-if="hover"
-                    absolute
-                    color="primary"
-                >
+                <v-overlay v-if="hover" absolute color="primary">
                   <v-btn @click="overlayAvatar = true">Change avatar</v-btn>
                 </v-overlay>
               </v-fade-transition>
             </v-img>
-
           </v-hover>
         </div>
       </v-col>
@@ -57,23 +49,25 @@
           </p>
         </div>
         <div class="my-3">
-          <div class="subheading secondary--text text--lighten-3">
-            Email
-          </div>
+          <div class="subheading secondary--text text--lighten-3">Email</div>
           <p>
             {{ user.email }}
           </p>
         </div>
         <div class="my-3">
-          <div class="subheading secondary--text text--lighten-3">
-            Description
-          </div>
+           <v-badge v-if="!userProfile.description" color="primary" dot>
+            <div class="subheading secondary--text text--lighten-3">Description</div>
+          </v-badge>
+          <span v-else><div class="subheading secondary--text text--lighten-3">Description</div></span>
           <p>
             {{ userProfile.description }}
           </p>
         </div>
         <div class="my-3">
-          <div class="subheading secondary--text text--lighten-3">Age</div>
+          <v-badge v-if="!userProfile.age" color="primary" dot>
+            <div class="subheading secondary--text text--lighten-3">Age</div>
+          </v-badge>
+          <span v-else><div class="subheading secondary--text text--lighten-3">Age</div></span>
           <p>
             {{ userProfile.age }}
           </p>
@@ -81,12 +75,10 @@
         <div class="my-3">
           <div class="subheading secondary--text text--lighten-3">Sex</div>
 
-          <p
-            v-if="userProfile.sex != null"
-          >
-            {{ !!userProfile.sex? 'Male':'Female'  }}
+          <p v-if="userProfile.sex != null">
+            {{ !!userProfile.sex ? "Male" : "Female" }}
           </p>
-          <div v-else class="body-1 text--darken-2">Not Set</div>
+          <div v-else class="body-1 text--darken-2"><v-badge color="primary" dot>Not Set</v-badge></div>
         </div>
       </v-col>
     </v-row>
@@ -100,13 +92,19 @@
       <v-card class="mx-auto my-12" light min-width="450">
         <v-form ref="form" lazy-validation>
           <v-container fluid>
-             <div class="headline mt-0">Edit Profile</div>
+            <div class="headline mt-0">Edit Profile</div>
             <v-text-field label="age" v-model.number="age"></v-text-field>
             <v-text-field
               label="Description"
               v-model="description"
             ></v-text-field>
-            <v-select :items="['Male','Female']" label="Sex" @change="setSex" v-model="sexSelected" solo></v-select>
+            <v-select
+              :items="['Male', 'Female']"
+              label="Sex"
+              @change="setSex"
+              v-model="sexSelected"
+              solo
+            ></v-select>
           </v-container>
         </v-form>
 
@@ -142,11 +140,14 @@
 </template>
 
 <script lang="ts">
-import {Component, Vue} from "vue-property-decorator";
-import {IUserProfileUpdate} from "@/interfaces";
-import {readUser, readUserProfile} from "@/store/main/getters";
-import {dispatchUpdateUserProfile, dispatchUploadUserAvatar,} from "@/store/main/actions";
-import {apiUrl} from "@/env";
+import { Component, Vue } from "vue-property-decorator";
+import { IUserProfileUpdate } from "@/interfaces";
+import { readUser, readUserProfile } from "@/store/main/getters";
+import {
+  dispatchUpdateUserProfile,
+  dispatchUploadUserAvatar,
+} from "@/store/main/actions";
+import { apiUrl } from "@/env";
 
 @Component
 export default class Profile extends Vue {
@@ -162,15 +163,17 @@ export default class Profile extends Vue {
   public overlay: boolean = false;
   public overlayAvatar: boolean = false;
 
-  public sexSelected: string | null = this.userProfile!.sex! ? "Male" : "Female";
+  public sexSelected: string | null = this.userProfile!.sex!
+    ? "Male"
+    : "Female";
   public description: string | null = this.userProfile!.description!;
   public fullname: string | null = this.user!.full_name!;
   public age: number | null = this.userProfile!.age!;
   public sex: boolean | null = this.userProfile!.sex!;
   public imageData: string | Blob = "";
 
-  public setSex(el: string){
-    this.sex = el == 'Male';
+  public setSex(el: string) {
+    this.sex = el == "Male";
   }
   public reset() {
     if (this.userProfile) {
@@ -183,11 +186,10 @@ export default class Profile extends Vue {
     this.reset();
   }
   public async submit() {
-
     const updatedProfile: IUserProfileUpdate = {
       description: this.description!,
       age: this.age!,
-      sex: this.sex! ,
+      sex: this.sex!,
     };
 
     await dispatchUpdateUserProfile(this.$store, updatedProfile);
